@@ -51,12 +51,12 @@ function createCodeBlock(code, filename, containerId) {
   wrapper.className = 'code-wrap accordion open';
   wrapper.id = id;
   wrapper.innerHTML =
-    '<button class="acc-hdr code-top" onclick="toggleAccordion(\'' + id + '\')">' +
+    '<div class="acc-hdr code-top" onclick="toggleAccordion(\'' + id + '\')">' +
     '<span class="code-name">' + escapeHtml(filename) + '</span>' +
     '<span class="code-acts" onclick="event.stopPropagation()">' +
     '<button class="code-btn" onclick="copyCode(\'' + id + '\')">Kopiuj</button>' +
-    '<button class="code-btn" onclick="downloadCode(\'' + id + '\', \'' + escapeHtml(filename).replace(/'/g, "\\'") + '\')">Pobierz</button>' +
-    '</span></button>' +
+    '<button class="code-btn btn-dl" onclick="downloadCode(\'' + id + '\', \'' + escapeHtml(filename).replace(/'/g, "\\'") + '\')">Pobierz</button>' +
+    '</span></div>' +
     '<div class="acc-body"><div class="code-inner"><pre>' + highlightC(code) + '</pre></div></div>';
   wrapper._rawCode = code;
   return wrapper;
