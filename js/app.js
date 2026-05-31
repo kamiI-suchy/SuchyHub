@@ -223,7 +223,7 @@ function renderTask() {
     html += '</div>';
   }
 
-  html += '<a class="btn btn-o btn-back" href="index.html">Powrot do listy zadan</a></div>';
+  html += '</div>';
   container.innerHTML = html;
 
   if (!hasFields && task.files && task.files.length > 0) {
