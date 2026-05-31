@@ -1,6 +1,0 @@
-export ARCH=arm
-export CROSS_COMPILE=arm-openwrt-linux-
-export PATH=$PATH:/omap/openwrt/staging_dir/toolchain-arm_cortex-a8+vfpv3_gcc-11.2.0_musl_eabi/bin
-export STAGING_DIR=/omap/openwrt/staging_dir/
-
-
