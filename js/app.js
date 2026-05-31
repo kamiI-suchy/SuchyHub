@@ -25,7 +25,6 @@ function highlightC(code) {
   var PL = '\u0104\u0105\u0106\u0107\u0118\u0119\u0141\u0142\u0143\u0144\u00D3\u00F3\u015A\u015B\u0179\u017A\u017B\u017C';
   var L  = 'a-zA-Z_' + PL;
   var W  = L + '0-9';
-  var N  = '0-9';
   var re = function(s, f) { return new RegExp(s, f || 'g'); };
 
   var tokens = [];
@@ -33,10 +32,10 @@ function highlightC(code) {
 
   html = html.replace(re('(\\/\\*[\\s\\S]*?\\*\\/|\\/\\/[^\\n]*)'), save.bind(null, 'c-cmt'));
 
-  html = html.replace(re('"((?:[^"\\\\]|\\\\.)*)"'), function(m) {
+  html = html.replace(re('(?:L|u|U|u8)?"((?:[^"\\\\]|\\\\.)*)"'), function(m) {
     return save('c-str', m.replace(re('\\\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|[0-7]{1,3}|.)'), '<span class="c-esc">$&</span>'));
   });
-  html = html.replace(re("'((?:[^'\\\\]|\\\\.)*)'"), function(m) {
+  html = html.replace(re("(?:L|u|U|u8)?'((?:[^'\\\\]|\\\\.)*)'"), function(m) {
     return save('c-str', m.replace(re('\\\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|[0-7]{1,3}|.)'), '<span class="c-esc">$&</span>'));
   });
 
