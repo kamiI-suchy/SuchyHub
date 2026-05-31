@@ -1,1 +1,0 @@
-cmd_/omap/SuchyHub/zadanie26/Module.symvers := sed 's/ko$$/o/' /omap/SuchyHub/zadanie26/modules.order | scripts/mod/modpost     -o /omap/SuchyHub/zadanie26/Module.symvers -e -i Module.symvers   -n -T -
