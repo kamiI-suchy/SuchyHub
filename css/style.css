@@ -33,35 +33,34 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .container{max-width:var(--mw);margin:0 auto;padding:2.5rem 1.5rem 3rem;width:100%}
 
 /* ─── INDEX: Task grid ─── */
-.page-title{text-align:center;margin-bottom:2.5rem}
-.page-title h1{font-size:2.2rem;font-weight:700;color:var(--text);letter-spacing:-.5px;margin-bottom:.25rem}
-.page-title p{font-size:1rem;color:var(--text-m)}
-
-.task-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem}
+/* ─── INDEX: Task list ─── */
+.task-list{display:flex;flex-direction:column;gap:.55rem}
 
 .task-card{
-  display:flex;flex-direction:column;gap:.35rem;
+  display:flex;align-items:center;gap:.8rem;
   background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r);padding:1.25rem 1.3rem;
+  border-radius:var(--r-sm);padding:.85rem 1.2rem;
   text-decoration:none;color:var(--text);
   box-shadow:var(--shadow-sm);
   transition:box-shadow var(--t),transform var(--t),border-color var(--t);
   position:relative;overflow:hidden
 }
 .task-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:3px;background:var(--accent);
-  transform:scaleX(0);transform-origin:left;
+  content:'';position:absolute;top:0;left:0;bottom:0;
+  width:3px;background:var(--accent);
+  transform:scaleY(0);transform-origin:top;
   transition:transform .25s ease
 }
-.task-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:var(--accent)}
-.task-card:hover::before{transform:scaleX(1)}
-.task-card:active{transform:translateY(0)}
+.task-card:hover{box-shadow:var(--shadow-md);transform:translateX(2px);border-color:var(--accent)}
+.task-card:hover::before{transform:scaleY(1)}
+.task-card:active{transform:translateX(0)}
 .task-card .num{
-  font-size:.75rem;font-weight:600;color:var(--accent);
-  text-transform:uppercase;letter-spacing:.7px
+  font-size:.78rem;font-weight:700;color:var(--accent);
+  background:var(--accent-l);border-radius:var(--r-xs);
+  padding:.2rem .6rem;white-space:nowrap;flex-shrink:0;
+  min-width:3.8rem;text-align:center
 }
-.task-card .title{font-size:1.02rem;font-weight:600;color:var(--text);line-height:1.4}
+.task-card .title{font-size:.96rem;font-weight:600;color:var(--text);line-height:1.35}
 
 /* ─── Task page ─── */
 .back{
@@ -215,7 +214,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .dl-item .dl-btn:hover{background:var(--accent-h);box-shadow:var(--shadow-sm)}
 
 @media(max-width:640px){
-  .task-grid{grid-template-columns:1fr}
+  .task-list{}.task-card{padding:.7rem 1rem}
   .task-header h1{font-size:1.35rem}
   .form-row{flex-direction:column;gap:.6rem}
   .container{padding:1.5rem 1rem 2rem}
