@@ -108,7 +108,7 @@ static int __init timer_init(void)
 
 	timer_setup(&timer, timer_callback, 0);
 	mod_timer(&timer, jiffies + msecs_to_jiffies(interval_ms));
-	printk(KERN_INFO "Sterownik zaladowany, domyslny okres: 1 s\n");
+	printk(KERN_INFO "Sterownik załadowany, domyślny okres: 1 s\n");
 
 	return 0;
 
@@ -128,7 +128,7 @@ static void __exit timer_exit(void)
 	class_destroy(timer_class);
 	cdev_del(&timer_cdev);
 	unregister_chrdev_region(dev_number, 1);
-	printk(KERN_INFO "Sterownik wyladowany\n");
+	printk(KERN_INFO "Sterownik wyładowany\n");
 }
 
 module_init(timer_init);
