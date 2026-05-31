@@ -101,21 +101,20 @@ function generateMorseBody(initials) {
     
     for (let si = 0; si < symbols.length; si++) {
       const dur = symbols[si] === '.' ? '500000' : '1500000';
-      const sym = symbols[si] === '.' ? '. ' : '- ';
       const comment = (li === 0 && si === 0) ? '  // ' + letters[0] + ': ' + pattern :
                       (li === 1 && si === 0) ? '  // ' + letters[1] + ': ' + pattern : '';
       lines.push('\t\tfprintf(brightness, "1\\n"); fflush(brightness); safe_usleep(' + dur + ');' + comment);
       lines.push('\t\tfprintf(brightness, "0\\n"); fflush(brightness); safe_usleep(500000);');
     }
-    
+
     if (li === 0) {
       lines.push('\t\tsafe_usleep(1000000);');
     }
   }
-  
+
   lines.push('\t\tsafe_usleep(3000000);');
   lines.push('\t}');
-  
+
   return lines.join('\n');
 }
 
