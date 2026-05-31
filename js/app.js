@@ -300,13 +300,40 @@ function generateAllFiles(task, fields, areaId) {
   });
 }
 
+function validateFields(formId, needs) {
+  var missing = [];
+  var form = document.getElementById(formId);
+  if (needs.fullName) {
+    var v = form ? form.querySelector('[name="fullName"]').value.trim() : '';
+    if (!v) missing.push('imie i nazwisko');
+  }
+  if (needs.albumNumber) {
+    var v = form ? form.querySelector('[name="albumNumber"]').value.trim() : '';
+    if (!v) missing.push('numer albumu');
+  }
+  if (needs.initials) {
+    var v = form ? form.querySelector('[name="initials"]').value.trim() : '';
+    if (!v || v.length < 2) missing.push('inicjaly (2 litery)');
+  }
+  return missing;
+}
+
 function generateFile(taskId, fileIdx, fieldsId) {
-  const task = TASKS.find(t => t.id === taskId);
+  var task = TASKS.find(function(t) { return t.id === taskId; });
   if (!task) return;
-  const file = task.files[fileIdx];
+  var file = task.files[fileIdx];
   if (!file) return;
-  const fields = getFormValues(fieldsId);
-  const code = substituteCode(file.template, fields);
+
+  if (task.needsFields) {
+    var missing = validateFields(fieldsId, task.needsFields);
+    if (missing.length > 0) {
+      alert('Uzupelnij pole: ' + missing.join(', '));
+      return;
+    }
+  }
+
+  var fields = getFormValues(fieldsId);
+  var code = substituteCode(file.template, fields);
   const area = document.getElementById('code-area-' + taskId);
   if (!area) return;
   // remove existing block for this file
