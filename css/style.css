@@ -168,10 +168,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
   color:var(--code-tx);margin:0;white-space:pre;tab-size:4
 }
 
-.c-kw{color:#d2a8ff}.c-pp{color:#7ee787}.c-str{color:#a5d6ff}
+.c-kw{color:#d2a8ff}.c-pp{color:#7ee787}.c-ppk{color:#a5f0b3;font-weight:700}.c-str{color:#a5d6ff}
 .c-cmt{color:#8b949e;font-style:italic}.c-num{color:#ffa657}
 .c-type{color:#ffc970}.c-func{color:#79c0ff}.c-esc{color:#ff7b72}
-.c-op{color:#c9d1d9}.c-lbl{color:#f778ba}
+.c-op{color:#c9d1d9}.c-lbl{color:#f778ba}.c-attr{color:#ffa198}
 
 /* ─── Downloads ─── */
 .dl-section{margin-bottom:1rem}
