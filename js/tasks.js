@@ -1,7 +1,7 @@
 const TASKS = [
   {
-    id: 17, title: "Modul jadra – hello printk",
-    desc: "Prosty modul jadra Linux wyswietlajacy personalia przez printk.",
+    id: 17, title: "Moduł jądra – hello printk",
+    desc: "Prosty moduł jądra Linux wyświetlający personalia przez printk.",
     pdf: "zadanie17/lab17.pdf", uruchomienie: "zadanie17/uruchomienie.txt",
     needsFields: { albumNumber: true, fullName: true },
     files: [{ name: "hello_printk.c", path: "zadanie17/hello_printk.c",
@@ -10,7 +10,7 @@ const TASKS = [
   },
   {
     id: 18, title: "Sterowanie LED przez sysfs – kod Morse'a",
-    desc: "Program migajacy dioda LED kodem Morse'a na podstawie inicjalow studenta.",
+    desc: "Program migający diodą LED kodem Morse'a na podstawie inicjałów studenta.",
     pdf: "zadanie18/lab18.pdf", uruchomienie: "zadanie18/uruchomienie.txt",
     needsFields: { initials: true },
     files: [
@@ -20,19 +20,19 @@ const TASKS = [
   },
   {
     id: 19, title: "Sterownik GPIO (sysfs) – miganie LED",
-    desc: "Program migajacy naprzemiennie czerwona i zielona dioda LED przez GPIO sysfs.",
+    desc: "Program migający naprzemiennie czerwoną i zieloną diodą LED przez GPIO sysfs.",
     pdf: "zadanie19/lab19.pdf", uruchomienie: "zadanie19/uruchomienie.txt",
     files: [{ name: "prog.c", path: "zadanie19/prog.c" }]
   },
   {
     id: 20, title: "Sterownik GPIO (sysfs) – odczyt przyciskow",
-    desc: "Program odczytujacy stan przyciskow (zolty i niebieski) przez GPIO sysfs.",
+    desc: "Program odczytujący stan przycisków (żółty i niebieski) przez GPIO sysfs.",
     pdf: "zadanie20/lab20.pdf", uruchomienie: "zadanie20/uruchomienie.txt",
     files: [{ name: "prog.c", path: "zadanie20/prog.c" }]
   },
   {
     id: 21, title: "Sterownik znakowy LED",
-    desc: "Sterownik znakowy (character device) sterujacy LED na podstawie inicjalow.",
+    desc: "Sterownik znakowy (character device) sterujący LED na podstawie inicjałów.",
     pdf: "zadanie21/lab21.pdf", uruchomienie: "zadanie21/uruchomienie.txt",
     needsFields: { fullName: true, initials: true },
     files: [
@@ -46,7 +46,7 @@ const TASKS = [
   },
   {
     id: 22, title: "Sterownik blokowy",
-    desc: "Sterownik blokowy zwracajacy numer indeksu po podaniu prawidlowego imienia i nazwiska.",
+    desc: "Sterownik blokowy zwracający numer indeksu po podaniu prawidłowego imienia i nazwiska.",
     pdf: "zadanie22/zad22.pdf", uruchomienie: "zadanie22/uruchomienie.txt",
     needsFields: { albumNumber: true, fullName: true },
     files: [{ name: "index_block.c", path: "zadanie22/index_block.c",
@@ -55,7 +55,7 @@ const TASKS = [
   },
   {
     id: 23, title: "USB – libftdi1 i ft232r_prog",
-    desc: "Odczyt konfiguracji ukladu FT232R (ft232r_prog) oraz unikalnego ID (libftdi1).",
+    desc: "Odczyt konfiguracji układu FT232R (ft232r_prog) oraz unikalnego ID (libftdi1).",
     pdf: "zadanie23/lab23.pdf", uruchomienie: "zadanie23/uruchomienie.txt",
     downloads: [
       { name: "ft232r_prog-1.25.tar.gz", path: "zadanie23/ft232r_prog-1.25.tar.gz" },
@@ -74,8 +74,8 @@ const TASKS = [
     ]
   },
   {
-    id: 25, title: "Sterownik – obsluga przerwan",
-    desc: "Sterownik obslugujacy przerwania od przyciskow GPIO68 (zolty) i GPIO69 (niebieski).",
+    id: 25, title: "Sterownik – obsługa przerwań",
+    desc: "Sterownik obsługujący przerwania od przycisków GPIO68 (żółty) i GPIO69 (niebieski).",
     pdf: "zadanie25/zad25.pdf", uruchomienie: "zadanie25/uruchomienie.txt",
     needsFields: { fullName: true },
     files: [{ name: "interrupt_buttons.c", path: "zadanie25/interrupt_buttons.c",
@@ -84,7 +84,7 @@ const TASKS = [
   },
   {
     id: 26, title: "Sterownik z timerem",
-    desc: "Sterownik znakowy wysylajacy komunikaty do dmesg co 1, 4 lub 8 sekund.",
+    desc: "Sterownik znakowy wysyłający komunikaty do dmesg co 1, 4 lub 8 sekund.",
     pdf: "zadanie26/zad26.pdf", uruchomienie: "zadanie26/uruchomienie.txt",
     needsFields: { fullName: true },
     files: [{ name: "timer_driver.c", path: "zadanie26/timer_driver.c",

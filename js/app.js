@@ -147,7 +147,7 @@ function validateFields(formId, needs) {
   var form = document.getElementById(formId);
   if (needs.fullName) {
     var v = form ? form.querySelector('[name="fullName"]').value.trim() : '';
-    if (!v) missing.push('imie i nazwisko');
+    if (!v) missing.push('imię i nazwisko');
   }
   if (needs.albumNumber) {
     var v = form ? form.querySelector('[name="albumNumber"]').value.trim() : '';
@@ -155,7 +155,7 @@ function validateFields(formId, needs) {
   }
   if (needs.initials) {
     var v = form ? form.querySelector('[name="initials"]').value.trim() : '';
-    if (!v || v.length < 2) missing.push('inicjaly (2 litery)');
+    if (!v || v.length < 2) missing.push('inicjały (2 litery)');
   }
   return missing;
 }
@@ -179,28 +179,28 @@ function renderTask() {
   var container = document.getElementById('task-page');
   if (!container) return;
   if (!task) {
-    container.innerHTML = '<div class="container"><p>Zadanie nie znalezione.</p><a class="back" href="index.html">Powrot</a></div>';
+    container.innerHTML = '<div class="container"><p>Nie znaleziono zadania.</p><a class="back" href="index.html">Powrót</a></div>';
     return;
   }
 
   document.title = 'Zadanie ' + task.id + ' – ' + task.title + ' – SuchyHub';
   var html = '<div class="container">';
-  html += '<a class="back" href="index.html">Powrot</a>';
+  html += '<a class="back" href="index.html">Powrót</a>';
   html += '<div class="task-header"><div class="lbl">Zadanie ' + task.id + '</div><h1>' + escapeHtml(task.title) + '</h1><p class="desc">' + escapeHtml(task.desc) + '</p></div>';
   html += '<a class="pdf-link" href="' + task.pdf + '" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Instrukcja PDF</a>';
 
   if (task.uruchomienie) {
-    html += '<div class="accordion" id="acc-uruch"><button class="acc-hdr" onclick="toggleAccordion(\'acc-uruch\')">Instrukcja uruchomienia</button><div class="acc-body"><div class="acc-inner" id="uruch-content">Ladowanie...</div></div></div>';
+    html += '<div class="accordion" id="acc-uruch"><button class="acc-hdr" onclick="toggleAccordion(\'acc-uruch\')">Instrukcja uruchomienia</button><div class="acc-body"><div class="acc-inner" id="uruch-content">Ładowanie...</div></div></div>';
   }
 
   var fieldsId = 'fields-' + task.id;
   var hasFields = task.needsFields && (task.needsFields.fullName || task.needsFields.albumNumber || task.needsFields.initials);
 
   if (hasFields) {
-    html += '<div class="form-box" id="' + fieldsId + '"><h3>Wprowadz dane</h3><div class="form-row">';
-    if (task.needsFields.fullName) html += '<div class="form-g"><label for="fn-' + task.id + '">Imie i nazwisko</label><input type="text" name="fullName" id="fn-' + task.id + '" placeholder="Jan Kowalski"></div>';
+    html += '<div class="form-box" id="' + fieldsId + '"><h3>Wprowadź dane</h3><div class="form-row">';
+    if (task.needsFields.fullName) html += '<div class="form-g"><label for="fn-' + task.id + '">Imię i nazwisko</label><input type="text" name="fullName" id="fn-' + task.id + '" placeholder="Jan Kowalski"></div>';
     if (task.needsFields.albumNumber) html += '<div class="form-g"><label for="an-' + task.id + '">Numer albumu</label><input type="text" name="albumNumber" id="an-' + task.id + '" placeholder="60000" maxlength="6"></div>';
-    if (task.needsFields.initials) html += '<div class="form-g"><label for="in-' + task.id + '">Inicjaly (2 litery)</label><input type="text" name="initials" id="in-' + task.id + '" placeholder="JK" maxlength="2"></div>';
+    if (task.needsFields.initials) html += '<div class="form-g"><label for="in-' + task.id + '">Inicjały (2 litery)</label><input type="text" name="initials" id="in-' + task.id + '" placeholder="JK" maxlength="2"></div>';
     html += '</div></div>';
   }
 
@@ -266,7 +266,7 @@ function generateFile(taskId, fileIdx, fieldsId) {
 
   if (task.needsFields) {
     var missing = validateFields(fieldsId, task.needsFields);
-    if (missing.length > 0) { alert('Uzupelnij pole: ' + missing.join(', ')); return; }
+    if (missing.length > 0) { alert('Uzupełnij pole: ' + missing.join(', ')); return; }
   }
 
   var fields = getFormValues(fieldsId);
