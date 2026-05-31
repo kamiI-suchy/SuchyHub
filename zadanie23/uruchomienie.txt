@@ -1,0 +1,118 @@
+╔══════════════════════════════════════════════════════════════╗
+║  ZADANIE 23 – instrukcja krok po kroku                      ║
+║  Każdą komendę przepisujesz dokładnie tak, jak poniżej.     ║
+╚══════════════════════════════════════════════════════════════╝
+
+Zakładamy, że pliki pobrane ze strony lądują w katalogu:
+  ~/Downloads
+
+Jeśli Twoja przeglądarka zapisuje gdzie indziej – zmień ścieżkę.
+
+
+────────────────────────────────────────────────────────────────
+CZĘŚĆ 1 – ft232r_prog: odczyt konfiguracji układu FT232R
+────────────────────────────────────────────────────────────────
+
+Co pobierasz ze strony:  ft232r_prog-1.25.tar.gz
+Skąd:                    sekcja "Pliki do pobrania" na stronie zadania 23
+
+1. Otwórz terminal.
+
+2. Przejdź do katalogu, gdzie pobrał Ci się plik:
+     cd ~/Downloads
+
+3. Rozpakuj archiwum:
+     tar -xf ft232r_prog-1.25.tar.gz
+
+   Po tej komendzie powstanie nowy katalog: ft232r_prog-1.25
+
+4. Wejdź do tego katalogu:
+     cd ft232r_prog-1.25
+
+5. Skompiluj program:
+     make
+
+6. Uruchom odczyt konfiguracji:
+     ./ft232r_prog --dump
+
+7. Zrób zrzut ekranu terminala (najważniejsze linie to te z cbus[0-4]).
+   Wstaw zrzut do Teams.
+
+
+────────────────────────────────────────────────────────────────
+CZĘŚĆ 2 – libftdi1: odczyt unikalnego ID układu FT232R
+────────────────────────────────────────────────────────────────
+
+Na stronie zadania 23 są DWIE wersje archiwum libftdi1-1.5.tar.bz2.
+Wybierz JEDNĄ z poniższych ścieżek i wykonaj ją od początku do końca.
+
+
+═══ ŚCIEŻKA A: Główne archiwum (zmodyfikowane, prostsze) ══════
+
+Co pobierasz:  libftdi1-1.5.tar.bz2
+Skąd:          sekcja "Pliki do pobrania" (główne)
+
+1. Pobierz plik libftdi1-1.5.tar.bz2 ze strony (przycisk "Pobierz"
+   przy pierwszym archiwum w sekcji "Pliki do pobrania").
+   Plik wyląduje w ~/Downloads.
+
+2. W terminalu przejdź do katalogu z plikiem:
+     cd ~/Downloads
+
+3. Rozpakuj (dekompresuj) archiwum bzip2:
+     bzip2 -d libftdi1-1.5.tar.bz2
+
+   Po tej komendzie plik .bz2 zniknie, a pojawi się:
+     libftdi1-1.5.tar
+
+4. Roztaruj archiwum tar:
+     tar -xf libftdi1-1.5.tar
+
+   Po tej komendzie pojawi się katalog:
+     libftdi1-1.5
+
+5. Wejdź do katalogu biblioteki:
+     cd libftdi1-1.5
+
+6. Utwórz katalog "build" i od razu do niego wejdź:
+     mkdir build && cd build
+
+7. Uruchom cmake (przygotowanie konfiguracji):
+     cmake ../
+
+8. Skompiluj bibliotekę razem z przykładami:
+     make
+
+9. Uruchom przykład "simple" – wypisze unikalne ID układu:
+     ./examples/simple
+
+10. Zrób zrzut ekranu terminala z ID układu.
+    Wstaw zrzut do Teams.
+
+
+═══ ŚCIEŻKA B: Oryginalne archiwum (niezmienione) ════════════
+
+Co pobierasz:  libftdi1-1.5.tar.bz2 (oryginalne)
+Skąd:          sekcja "Archiwum oryginalne" na dole strony
+
+1. Pobierz plik z sekcji "Archiwum oryginalne" (drugi przycisk
+   "Pobierz" na stronie, ten przy oryginalnym archiwum).
+   Plik wyląduje w ~/Downloads.
+
+2. Reszta kroków jest TAKA SAMA jak w Ścieżce A:
+     cd ~/Downloads
+     bzip2 -d libftdi1-1.5.tar.bz2
+     tar -xf libftdi1-1.5.tar
+     cd libftdi1-1.5
+     mkdir build && cd build
+     cmake ../
+     make
+     ./examples/simple
+
+3. Zrób zrzut ekranu i wstaw do Teams.
+
+
+UWAGA: Dla tego zadania (23) obie ścieżki dają ten sam efekt –
+uruchamiasz tylko ./examples/simple, który w obu wersjach
+archiwum jest identyczny. Różnica między archiwami ma znaczenie
+dopiero w zadaniu 24.

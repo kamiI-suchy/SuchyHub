@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie 18 – LED Morse</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 16px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(14, 116, 189, 0.12);
+            padding: 40px 36px 32px;
+            max-width: 720px;
+            width: 100%;
+        }
+        h1 {
+            margin: 0 0 6px;
+            color: #0e74bd;
+            font-size: 1.6em;
+        }
+        p.desc {
+            color: #5a8fa8;
+            margin: 0 0 24px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        p.desc strong { color: #0e74bd; }
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: 600;
+            color: #0e74bd;
+            font-size: 0.95em;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 1em;
+            margin-top: 6px;
+            border: 1.5px solid #bae0f5;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.15s;
+            color: #1a3a4a;
+            text-transform: uppercase;
+        }
+        input[type="text"]:focus { border-color: #0e74bd; }
+        button.generate-btn {
+            margin-top: 24px;
+            padding: 11px 32px;
+            font-size: 1em;
+            font-weight: 600;
+            background: linear-gradient(90deg, #0e74bd, #38bdf8);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(14, 116, 189, 0.18);
+            transition: opacity 0.15s;
+        }
+        button.generate-btn:hover { opacity: 0.9; }
+        .code-block-wrapper {
+            position: relative;
+            margin-top: 28px;
+            display: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(14, 116, 189, 0.10);
+        }
+        .code-block-wrapper.visible { display: block; }
+        pre.code-block {
+            background: #0f2233;
+            color: #cce8f8;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.9em;
+            padding: 20px;
+            margin: 0;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        .btn-group {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        .action-btn {
+            padding: 4px 12px;
+            font-size: 0.8em;
+            background: #1a6a9a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .action-btn:hover {
+            background: #38bdf8;
+            color: #0f2233;
+        }
+        a.back {
+            display: inline-block;
+            margin-top: 24px;
+            color: #0e74bd;
+            font-size: 0.95em;
+            text-decoration: none;
+        }
+        a.back:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Zadanie 18 – miganie LED kodem Morse'a</h1>
+        <div class="section">
+            <p><a href="lab18.pdf" target="_blank">Otwórz treść zadania (PDF)</a></p>
+        </div>
+        <p class="desc">
+            Wpisz swoje inicjały
+        </p>
+        <section class="mb-3">
+            <div class="accordion" id="acc1">
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#c1"
+                                aria-expanded="false">
+                            Pokaż instrukcję do wykonania zadania
+                        </button>
+                    </h3>
+                    <div id="c1" 
+                         class="accordion-collapse collapse" 
+                         data-bs-parent="#acc1">
+                        <div class="accordion-body" id="c1-body" style="white-space: pre-wrap;">
+                            Ładowanie instrukcji...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <label for="inicjaly">Inicjały (litery A–Z):</label>
+        <input type="text" id="inicjaly" placeholder="np. JK" maxlength="5">
+
+        <br>
+        <button class="generate-btn" onclick="generuj()">Generuj kod</button>
+        <button class="generate-btn" onclick="generujKrotszaWersje()">Generuj kod krótszej wersji</button>
+
+        <div id="output-wrapper" class="code-block-wrapper">
+            <div class="btn-group">
+                <button class="action-btn" onclick="kopiuj(event)">Kopiuj</button>
+                <button class="action-btn" onclick="pobierz()">Pobierz</button>
+            </div>
+            <pre class="code-block" id="output"></pre>
+        </div>
+        <a class="back" href="../index.html">← Powrót</a>
+    </div>
+
+    <script>
+        const MORSE = {
+            'A': '.-',
+            'B': '-...',
+            'C': '-.-.',
+            'D': '-..',
+            'E': '.',
+            'F': '..-.',
+            'G': '--.',
+            'H': '....',
+            'I': '..',
+            'J': '.---',
+            'K': '-.-',
+            'L': '.-..',
+            'M': '--',
+            'N': '-.',
+            'O': '---',
+            'P': '.--.',
+            'Q': '--.-',
+            'R': '.-.',
+            'S': '...',
+            'T': '-',
+            'U': '..-',
+            'V': '...-',
+            'W': '.--',
+            'X': '-..-',
+            'Y': '-.--',
+            'Z': '--..'
+        };
+
+        const DOT          = 500000;
+        const DASH         = 1500000;
+        const SYM_GAP      = 500000;
+        const LET_GAP      = 1500000;
+        const EXTRA_LET_GAP = LET_GAP - SYM_GAP;
+        const WORD_GAP     = 3500000;
+        const EXTRA_WORD_GAP = WORD_GAP - SYM_GAP;
+
+        function symbolLinesKrotsze(sym, last, lastLetter) {
+            const onTime = sym === '.' ? DOT : DASH;
+            const lines = [];
+            lines.push('\t\tfprintf(brightness, "1\\n"); fflush(brightness); usleep(' + onTime + ');');
+            lines.push('\t\tfprintf(brightness, "0\\n"); fflush(brightness); usleep(' + SYM_GAP + ');');
+            if (last) {
+                if (lastLetter) {
+                    lines.push('\t\tusleep(' + EXTRA_WORD_GAP + ');');
+                } else {
+                    lines.push('\t\tusleep(' + EXTRA_LET_GAP + ');');
+                }
+            }
+            return lines;
+        }
+
+        function letterLinesKrotsze(letter, lastLetter) {
+            const pattern = MORSE[letter];
+            if (!pattern) return [];
+            const lines = [];
+            for (let i = 0; i < pattern.length; i++) {
+                const isLast = (i === pattern.length - 1);
+                symbolLinesKrotsze(pattern[i], isLast, lastLetter).forEach(l => lines.push(l));
+            }
+            return lines;
+        }
+
+        function symbolLines(sym, last, lastLetter) {
+            const onTime = sym === '.' ? DOT : DASH;
+            const lines = [];
+            lines.push('\t\tfprintf(brightness, "1\\n"); fflush(brightness); safe_usleep(' + onTime + ');');
+            lines.push('\t\tfprintf(brightness, "0\\n"); fflush(brightness); safe_usleep(' + SYM_GAP + ');');
+            if (last) {
+                if (lastLetter) {
+                    lines.push('\t\tsafe_usleep(' + EXTRA_WORD_GAP + ');');
+                } else {
+                    lines.push('\t\tsafe_usleep(' + EXTRA_LET_GAP + ');');
+                }
+            }
+            return lines;
+        }
+
+        function letterLines(letter, lastLetter) {
+            const pattern = MORSE[letter];
+            if (!pattern) return [];
+            const lines = [];
+            for (let i = 0; i < pattern.length; i++) {
+                const isLast = (i === pattern.length - 1);
+                symbolLines(pattern[i], isLast, lastLetter).forEach(l => lines.push(l));
+            }
+            return lines;
+        }
+
+        function generuj() {
+            const raw = document.getElementById("inicjaly").value.trim().toUpperCase();
+            const inicjaly = raw.replace(/[^A-Z]/g, '');
+
+            if (inicjaly.length === 0) {
+                alert("Proszę wpisać inicjały (litery A–Z).");
+                return;
+            }
+
+            for (const ch of inicjaly) {
+                if (!MORSE[ch]) {
+                    alert("Nieznana litera: " + ch);
+                    return;
+                }
+            }
+
+            const bodyLines = [];
+            for (let i = 0; i < inicjaly.length; i++) {
+                const isLast = (i === inicjaly.length - 1);
+                letterLines(inicjaly[i], isLast).forEach(l => bodyLines.push(l));
+            }
+
+            const lines = [
+                '#include <stdio.h>',
+                '#include <unistd.h>',
+                '#include <signal.h>',
+                '#include <stdlib.h>',
+                '#include <stdbool.h>',
+                '',
+                'static FILE *trigger    = NULL;',
+                'static FILE *brightness = NULL;',
+                'static volatile sig_atomic_t keep_running = 1;',
+                '',
+                'static void handle_sigint(int sig) {',
+                '\t(void)sig;',
+                '\tkeep_running = 0;',
+                '}',
+                '',
+                'static void safe_usleep(unsigned usec) {',
+                '\tconst unsigned SLICE = 100000;',
+                '\twhile (usec > 0 && keep_running) {',
+                '\t\tunsigned slice = (usec > SLICE) ? SLICE : usec;',
+                '\t\tusleep(slice);',
+                '\t\tusec -= slice;',
+                '\t}',
+                '}',
+                '',
+                'int main() {',
+                '\ttrigger    = fopen("/sys/class/leds/beaglebone:green:usr3/trigger",    "w");',
+                '\tbrightness = fopen("/sys/class/leds/beaglebone:green:usr3/brightness", "w");',
+                '',
+                '\tif (!trigger || !brightness) {',
+                '\t\tperror("Błąd otwarcia plików sysfs");',
+                '\t\treturn 1;',
+                '\t}',
+                '',
+                '\tsignal(SIGINT, handle_sigint);',
+                '',
+                '\tfprintf(trigger, "none\\n");',
+                '\tfflush(trigger);',
+                '',
+                '\twhile (keep_running) {',
+                ...bodyLines,
+                '\t}',
+                '',
+                '\tfprintf(brightness, "0\\n");',
+                '\tfflush(brightness);',
+                '\tfclose(brightness);',
+                '\tfclose(trigger);',
+                '\treturn 0;',
+                '}'
+            ];
+
+            document.getElementById("output").textContent = lines.join("\n");
+            document.getElementById("output-wrapper").classList.add("visible");
+        }
+
+        function generujKrotszaWersje() {
+            const raw = document.getElementById("inicjaly").value.trim().toUpperCase();
+            const inicjaly = raw.replace(/[^A-Z]/g, '');
+
+            if (inicjaly.length === 0) {
+                alert("Proszę wpisać inicjały (litery A–Z).");
+                return;
+            }
+
+            for (const ch of inicjaly) {
+                if (!MORSE[ch]) {
+                    alert("Nieznana litera: " + ch);
+                    return;
+                }
+            }
+
+            const bodyLines = [];
+            for (let i = 0; i < inicjaly.length; i++) {
+                const isLast = (i === inicjaly.length - 1);
+                letterLinesKrotsze(inicjaly[i], isLast).forEach(l => bodyLines.push(l));
+            }
+
+            const lines = [
+                '#include <stdio.h>',
+                '#include <unistd.h>',
+                '',
+                'int main() {',
+                '\tFILE * trigger    = fopen("/sys/class/leds/beaglebone:green:usr3/trigger",    "w");',
+                '\tFILE * brightness = fopen("/sys/class/leds/beaglebone:green:usr3/brightness", "w");',
+                '',
+                '\tfprintf(trigger, "none\\n");',
+                '\tfflush(trigger);',
+                '',
+                '\twhile(1) {',
+                ...bodyLines,
+                '\t}',
+                '',
+                '\treturn 0;',
+                '}'
+            ];
+
+            document.getElementById("output").textContent = lines.join("\n");
+            document.getElementById("output-wrapper").classList.add("visible");
+        }
+
+        function kopiuj(event) {
+            const text = document.getElementById("output").textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target; // kliknięty przycisk
+                if (btn && btn.classList.contains('action-btn')) {
+                    const original = btn.textContent;
+                    btn.textContent = "Skopiowano!";
+                    setTimeout(() => { btn.textContent = original; }, 2000);
+                }
+            });
+        }
+
+        function pobierz() {
+            const text = document.getElementById("output").textContent;
+            const blob = new Blob([text], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "prog.c";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            const collapseEl = document.getElementById('c1');
+            const bodyEl = document.getElementById('c1-body');
+            let loaded = false;
+
+            collapseEl.addEventListener('show.bs.collapse', function () {
+                if (!loaded) {
+                    fetch('uruchomienie.txt')
+                        .then(response => {
+                            if (!response.ok) throw new Error('Błąd ' + response.status);
+                            return response.text();
+                        })
+                        .then(text => {
+                            bodyEl.textContent = text;
+                            loaded = true;
+                        })
+                        .catch(error => {
+                            bodyEl.textContent = 'Nie udało się wczytać instrukcji: ' + error.message;
+                            loaded = true;
+                        });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

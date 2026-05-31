@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie 21 – sterownik znakowy LED</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 16px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(14, 116, 189, 0.12);
+            padding: 40px 36px 32px;
+            max-width: 760px;
+            width: 100%;
+        }
+        h1 {
+            margin: 0 0 6px;
+            color: #0e74bd;
+            font-size: 1.6em;
+        }
+        p.desc {
+            color: #5a8fa8;
+            margin: 0 0 20px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: 600;
+            color: #0e74bd;
+            font-size: 0.95em;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 1em;
+            margin-top: 6px;
+            border: 1.5px solid #bae0f5;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.15s;
+            color: #1a3a4a;
+        }
+        #inicjaly { text-transform: uppercase; }
+        input[type="text"]:focus { border-color: #0e74bd; }
+        button.generate-btn {
+            margin-top: 24px;
+            padding: 11px 32px;
+            font-size: 1em;
+            font-weight: 600;
+            background: linear-gradient(90deg, #0e74bd, #38bdf8);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(14, 116, 189, 0.18);
+            transition: opacity 0.15s;
+        }
+        button.generate-btn:hover { opacity: 0.9; }
+        .files-container {
+            margin-top: 26px;
+            display: none;
+        }
+        .files-container.visible { display: block; }
+        .file-title {
+            margin: 22px 0 10px;
+            font-weight: 600;
+            color: #0e74bd;
+            font-size: 1em;
+        }
+        .code-block-wrapper {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(14, 116, 189, 0.10);
+        }
+        pre.code-block {
+            background: #0f2233;
+            color: #cce8f8;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.9em;
+            padding: 20px;
+            margin: 0;
+            overflow-x: auto;
+            white-space: pre;
+            min-height: 140px;
+        }
+        .btn-group {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        .action-btn {
+            padding: 4px 12px;
+            font-size: 0.8em;
+            background: #1a6a9a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .action-btn:hover {
+            background: #38bdf8;
+            color: #0f2233;
+        }
+        a.back {
+            display: inline-block;
+            margin-top: 24px;
+            color: #0e74bd;
+            font-size: 0.95em;
+            text-decoration: none;
+        }
+        a.back:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Zadanie 21 – sterownik znakowy LED</h1>
+        <div class="section">
+            <p><a href="lab21.pdf" target="_blank">Otwórz treść zadania (PDF)</a></p>
+        </div>
+        <p class="desc">
+            Wpisz imię i nazwisko oraz inicjały (litery A–Z), które mają zapalać LED po przesłaniu do urządzenia znakowego.
+        </p>
+
+        <section class="mb-3">
+            <div class="accordion" id="acc1">
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#c1"
+                                aria-expanded="false">
+                            Pokaż instrukcję do wykonania zadania
+                        </button>
+                    </h3>
+                    <div id="c1" 
+                         class="accordion-collapse collapse" 
+                         data-bs-parent="#acc1">
+                        <div class="accordion-body" id="c1-body" style="white-space: pre-wrap;">
+                            Ładowanie instrukcji...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <label for="name">Imię i nazwisko:</label>
+        <input type="text" id="name" placeholder="np. Jan Kowalski">
+
+        <label for="inicjaly">Inicjały (litery A–Z):</label>
+        <input type="text" id="inicjaly" placeholder="np. JK" maxlength="5">
+
+        <button class="generate-btn" onclick="generuj()">Generuj kod</button>
+
+        <div id="files" class="files-container"></div>
+
+        <a class="back" href="../index.html">← Powrót</a>
+    </div>
+
+    <script>
+        let ledCharTemplate = "";
+        let makefileText = "";
+        let prepareText = "";
+        let currentFiles = [];
+
+        async function ensureTemplates() {
+            if (ledCharTemplate && makefileText && prepareText) return;
+
+            const [ledRes, makeRes, prepRes] = await Promise.all([
+                fetch("led_char.c", { cache: "no-store" }),
+                fetch("Makefile", { cache: "no-store" }),
+                fetch("prepare", { cache: "no-store" })
+            ]);
+
+            if (!ledRes.ok) throw new Error("Nie udało się wczytać led_char.c");
+            if (!makeRes.ok) throw new Error("Nie udało się wczytać Makefile");
+            if (!prepRes.ok) throw new Error("Nie udało się wczytać prepare");
+
+            ledCharTemplate = await ledRes.text();
+            makefileText = await makeRes.text();
+            prepareText = await prepRes.text();
+        }
+
+        function escapeCString(text) {
+            return text
+                .replace(/\\/g, "\\\\")
+                .replace(/"/g, "\\\"")
+                .replace(/\n/g, "\\n")
+                .replace(/\r/g, "\\r")
+                .replace(/\t/g, "\\t");
+        }
+
+        function buildInitialsCheck(initials) {
+            const unique = Array.from(new Set(initials.split("")));
+            return unique.map(ch => `ch == '${ch}'`).join(" || ");
+        }
+
+        async function generuj() {
+            const name = document.getElementById("name").value.trim();
+            const raw = document.getElementById("inicjaly").value.trim().toUpperCase();
+            const initials = raw.replace(/[^A-Z]/g, "");
+
+            if (!name) {
+                alert("Proszę wpisać imię i nazwisko.");
+                return;
+            }
+
+            if (!initials) {
+                alert("Proszę wpisać inicjały (litery A–Z).");
+                return;
+            }
+
+            try {
+                await ensureTemplates();
+                const check = buildInitialsCheck(initials);
+                const escapedName = escapeCString(name);
+                let updatedCode = ledCharTemplate.replace(/return ch ==[^;]*;/, `return ${check};`);
+                updatedCode = updatedCode.replace(/MODULE_AUTHOR\("[^"]*"\)/, `MODULE_AUTHOR("${escapedName}")`);
+
+                const files = [
+                    { name: "led_char.c", label: "led_char.c", content: updatedCode },
+                    { name: "Makefile", label: "Makefile", content: makefileText },
+                    { name: "prepare", label: "prepare", content: prepareText }
+                ];
+
+                renderFiles(files);
+            } catch (error) {
+                alert("Błąd generowania kodu: " + error.message);
+            }
+        }
+
+        function renderFiles(files) {
+            const container = document.getElementById("files");
+            container.innerHTML = "";
+            currentFiles = files;
+
+            files.forEach((file, index) => {
+                const section = document.createElement("div");
+                const title = document.createElement("div");
+                title.className = "file-title";
+                title.textContent = file.label;
+                section.appendChild(title);
+
+                const wrapper = document.createElement("div");
+                wrapper.className = "code-block-wrapper";
+
+                const btnGroup = document.createElement("div");
+                btnGroup.className = "btn-group";
+
+                const copyBtn = document.createElement("button");
+                copyBtn.className = "action-btn";
+                copyBtn.textContent = "Kopiuj";
+                copyBtn.onclick = (event) => kopiujPlik(event, index);
+
+                const downloadBtn = document.createElement("button");
+                downloadBtn.className = "action-btn";
+                downloadBtn.textContent = "Pobierz";
+                downloadBtn.onclick = () => pobierzPlik(index);
+
+                btnGroup.appendChild(copyBtn);
+                btnGroup.appendChild(downloadBtn);
+                wrapper.appendChild(btnGroup);
+
+                const pre = document.createElement("pre");
+                pre.className = "code-block";
+                pre.textContent = file.content;
+                wrapper.appendChild(pre);
+
+                section.appendChild(wrapper);
+                container.appendChild(section);
+            });
+
+            container.classList.add("visible");
+        }
+
+        function kopiujPlik(event, index) {
+            const file = currentFiles[index];
+            if (!file) return;
+            navigator.clipboard.writeText(file.content).then(() => {
+                const btn = event.target;
+                if (btn && btn.classList.contains("action-btn")) {
+                    const original = btn.textContent;
+                    btn.textContent = "Skopiowano!";
+                    setTimeout(() => { btn.textContent = original; }, 2000);
+                }
+            });
+        }
+
+        function pobierzPlik(index) {
+            const file = currentFiles[index];
+            if (!file) return;
+            const mime = file.name.includes(".") ? "text/plain" : "application/octet-stream";
+            const blob = new Blob([file.content], { type: mime });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            const collapseEl = document.getElementById('c1');
+            const bodyEl = document.getElementById('c1-body');
+            let loaded = false;
+
+            collapseEl.addEventListener('show.bs.collapse', function () {
+                if (!loaded) {
+                    fetch('uruchomienie.txt')
+                        .then(response => {
+                            if (!response.ok) throw new Error('Błąd ' + response.status);
+                            return response.text();
+                        })
+                        .then(text => {
+                            bodyEl.textContent = text;
+                            loaded = true;
+                        })
+                        .catch(error => {
+                            bodyEl.textContent = 'Nie udało się wczytać instrukcji: ' + error.message;
+                            loaded = true;
+                        });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

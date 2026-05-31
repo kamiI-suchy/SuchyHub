@@ -1,0 +1,1 @@
+cmd_/omap/SuchyHub/zadanie26/timer_driver.ko := arm-openwrt-linux-ld -r -EL -z noexecstack --build-id=sha1  -T scripts/module.lds -o /omap/SuchyHub/zadanie26/timer_driver.ko /omap/SuchyHub/zadanie26/timer_driver.o /omap/SuchyHub/zadanie26/timer_driver.mod.o;  true

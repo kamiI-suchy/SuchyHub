@@ -1,0 +1,39 @@
+W przypadku kodu na płytkę BBB:
+1. Skopiowanie wygenerowanych plików (index_block.c, Makefile, prepare) do katalogu /omap/device
+2. Wejście do folderu /omap/device/ za pomocą polecenia
+cd /omap/device
+3. Wykonanie polecenia:
+. ./prepare
+(tak, tam jest spacja)
+4. Użycie polecenia make
+5. Wejście na płytkę (telnet omap), jak już tam jesteśmy to wykonujemy polecenie
+cd home
+6. Włożenie modułu
+insmod index_block.ko
+7. Sprawdzenie, czy włożenie modułu się powiodło
+dmesg | tail
+8. Test: zapisanie imienia i nazwiska do urządzenia (np. echo "Jan Kowalski" > /dev/index_block) i odczyt za pomocą polecenia
+cat /dev/index_block
+A potem sprawdzenie co się stanie dla innych danych
+echo "Coś innego" > /dev/index_block
+cat /dev/index_block
+9. Usunięcie modułu
+rmmod index_block
+
+W przypadku tego drugiego kodu:
+1. Skopiowanie wygenerowanych plików (index_block.c, Makefile) do jakiegoś folderu
+2. Wejście do folderu z tymi plikami
+3. Użycie polecenia make
+4. Włożenie modułu
+sudo insmod index_block.ko
+5. Sprawdzenie, czy włożenie modułu się powiodło
+sudo dmesg | tail
+6. Test: zapisanie imienia i nazwiska do urządzenia (np. echo "Jan Kowalski" | sudo tee /dev/index_block) i odczyt za pomocą polecenia
+sudo cat /dev/index_block
+A potem sprawdzenie co się stanie dla innych danych
+echo "Coś innego" | sudo tee /dev/index_block
+sudo cat /dev/index_block
+7. Usunięcie modułu
+sudo rmmod index_block
+
+Nagrywamy tylko ekran jak to wykonujemy od czasu polecenia insmod do polecenia rmmod

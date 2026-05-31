@@ -1,0 +1,22 @@
+1. Skopiowanie wygenerowanych plików (interrupt_button.c, Makefile, prepare) do katalogu /omap/device
+2. Wejście do folderu /omap/device/ za pomocą polecenia
+cd /omap/device
+3. Wykonanie polecenia
+. ./prepare
+(tak, tam jest spacja)
+4. Użycie polecenia make
+5. Wejście na płytkę (telnet omap), jak już tam jesteśmy to wykonujemy polecenie
+cd home
+6. Włożenie modułu
+insmod interrupt_button.ko
+7. Sprawdzenie, czy włożenie modułu się powiodło
+dmesg | tail
+8. Test: wciśnięcie przycisków GPIO68 (żółty, skrajny górny) oraz GPIO69 (niebieski, skrajny dolny) i sprawdzenie logów za pomocą
+dmesg | tail
+Powinno wyświetlić się rozróżnienie, który przycisk został naciśnięty:
+Przycisk GPIO68 nacisniety
+Przycisk GPIO69 nacisniety
+9. Usunięcie modułu
+rmmod interrupt_button
+
+Nagrywamy ekran komputera za pomocą OBS jak to robimy oraz telefonem płytkę jak naciskamy przyciski

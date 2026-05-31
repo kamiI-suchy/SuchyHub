@@ -1,0 +1,19 @@
+1. Skopiowanie wszystkich plików za pomocą polecenia
+cp /omap/modul/* /omap/device
+2. Wejście do folderu /omap/device/ za pomocą polecenia
+cd /omap/device
+3. Wykonanie polecenia
+. ./prepare
+(tak, tam jest spacja)
+4. Zmodyfikowanie pliku hello_printk.c za pomocą polecenia
+nano hello_printk.c
+tak, aby plik zawierał twoje dane. Wychodzi się Ctrl + X i potem y i enter
+5. Użycie polecenia make
+6. Wejście na płytkę (telnet omap), jak już tam jesteśmy to wykonujemy polecenie
+cd home
+i potem wykonujemy trzy inne polecenia:
+insmod hello_printk.ko
+rmmod hello_printk
+dmesg | tail
+
+Część 6 się nagrywa od momentu wykonywania tych poleceń insmod, rmmod i dmesg

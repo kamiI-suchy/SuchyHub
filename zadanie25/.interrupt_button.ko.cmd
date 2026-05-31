@@ -1,0 +1,1 @@
+cmd_/omap/SuchyHub/zadanie25/interrupt_button.ko := arm-openwrt-linux-ld -r -EL -z noexecstack --build-id=sha1  -T scripts/module.lds -o /omap/SuchyHub/zadanie25/interrupt_button.ko /omap/SuchyHub/zadanie25/interrupt_button.o /omap/SuchyHub/zadanie25/interrupt_button.mod.o;  true

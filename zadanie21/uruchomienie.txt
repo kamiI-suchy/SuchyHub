@@ -1,0 +1,18 @@
+1. Skopiowanie wygenerowanych plików (led_char.c, Makefile, prepare) do katalogu /omap/device
+2. Wejście do folderu /omap/device/ za pomocą polecenia
+cd /omap/device
+3. Wykonanie polecenia
+. ./prepare
+(tak, tam jest spacja)
+4. Użycie polecenia make
+5. Wejście na płytkę (telnet omap), jak już tam jesteśmy to wykonujemy polecenie
+cd home
+6. Włożenie modułu
+insmod led_char.ko
+7. Sprawdzenie, czy włożenie modułu się powiodło
+dmesg | tail
+8. Test: wpisanie inicjałów do urządzenia znakowego (np. echo "J" > /dev/bbb_led_char) bądź (np. echo "K" > /dev/bbb_led_char) i nagranie działania LED. Jak wpisze się literę inną niż jedną ze swoich inicjałów to dioda zgaśnie
+9. Usunięcie modułu
+rmmod led_char
+
+Nagrywamy ekran komputera za pomocą OBS jak to robimy oraz telefonem płytkę czy się świeci

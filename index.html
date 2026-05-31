@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuchyHub – Systemy operacyjne</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(14, 116, 189, 0.12);
+            padding: 48px 40px 40px;
+            max-width: 560px;
+            width: 90%;
+            text-align: center;
+        }
+        h1 {
+            margin: 0 0 8px;
+            color: #0e74bd;
+            font-size: 1.8em;
+        }
+        p.subtitle {
+            color: #64a6c8;
+            margin: 0 0 36px;
+            font-size: 0.95em;
+        }
+        a.task-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 12px 0;
+            padding: 16px 28px;
+            font-size: 1.05em;
+            font-weight: 600;
+            text-decoration: none;
+            background: linear-gradient(90deg, #0e74bd, #38bdf8);
+            color: #fff;
+            border-radius: 10px;
+            transition: opacity 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 8px rgba(14, 116, 189, 0.18);
+        }
+        a.task-link:hover {
+            opacity: 0.9;
+            box-shadow: 0 4px 16px rgba(14, 116, 189, 0.28);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Systemy operacyjne</h1>
+        <p class="subtitle">Wybierz zadanie</p>
+        <a class="task-link" href="zadanie17/index.html">Zadanie 17 – moduł jądra</a>
+        <a class="task-link" href="zadanie18/index.html">Zadanie 18 – miganie LED kodem Morse'a</a>
+        <a class="task-link" href="zadanie19/index.html">Zadanie 19 – GPIO sysfs dla LED</a>
+        <a class="task-link" href="zadanie20/index.html">Zadanie 20 – odczyt przycisków przez GPIO sysfs</a>
+        <a class="task-link" href="zadanie21/index.html">Zadanie 21 – sterownik znakowy LED</a>
+        <a class="task-link" href="zadanie22/index.html">Zadanie 22 – sterownik blokowy</a>
+        <a class="task-link" href="zadanie23/index.html">Zadanie 23 – USB: libftdi1 i ft232r_prog</a>
+        <a class="task-link" href="zadanie24/index.html">Zadanie 24 – USB: libftdi1 (LEDy)</a>
+        <a class="task-link" href="zadanie25/index.html">Zadanie 25 – sterownik obsługi przerwań</a>
+        <a class="task-link" href="zadanie26/index.html">Zadanie 26 – sterownik znakowy z timerem</a>
+    </div>
+</body>
+</html>

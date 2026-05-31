@@ -1,0 +1,12 @@
+1. Skopiowanie pliku Makefile za pomocą polecenia
+cp /omap/program/Makefile /omap/device
+2. Stworzenie pliku prog.c za pomocą polecenia
+touch prog.c
+3. Otworzenie pliku, aby móc przepisać kod za pomocą polecenia
+nano prog.c
+i wychodzimy Ctrl + X i potem y i enter
+4. Używamy polecenia make
+5. Wejście na płytkę (telnet omap) i wejście na katalog domowy za pomocą polecenia
+cd home
+6. Uruchomienie programu ./prog
+7. Nagranie tego jak naciskamy przyciski żółty i niebieski i że w terminalu się wyświetla stan przycisku

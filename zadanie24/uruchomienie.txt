@@ -1,0 +1,106 @@
+╔══════════════════════════════════════════════════════════════╗
+║  ZADANIE 24 – instrukcja krok po kroku                      ║
+║  Każdą komendę przepisujesz dokładnie tak, jak poniżej.     ║
+╚══════════════════════════════════════════════════════════════╝
+
+Zakładamy, że pliki pobrane ze strony lądują w katalogu:
+  ~/Downloads
+
+Jeśli Twoja przeglądarka zapisuje gdzie indziej – zmień ścieżkę.
+
+────────────────────────────────────────────────────────────────
+KROK 1 – Rozpakowanie i kompilacja biblioteki libftdi1
+────────────────────────────────────────────────────────────────
+
+Są DWIE ścieżki – wybierz JEDNĄ i wykonaj ją od początku do końca.
+
+
+═══ ŚCIEŻKA A: Główne archiwum (ma już zmodyfikowany bitbang_cbus.c) ═══
+
+Co pobierasz:  libftdi1-1.5.tar.bz2
+Skąd:          sekcja "Pliki do pobrania" (pierwszy przycisk "Pobierz")
+
+1. Pobierz plik ze strony.
+   Plik wyląduje w ~/Downloads.
+
+2. W terminalu:
+     cd ~/Downloads
+     bzip2 -d libftdi1-1.5.tar.bz2
+     tar -xf libftdi1-1.5.tar
+     cd libftdi1-1.5
+     mkdir build && cd build
+     cmake ../
+     make
+
+3. Gotowe. Przejdź od razu do KROKU 2 (uruchomienie).
+
+
+═══ ŚCIEŻKA B: Oryginalne archiwum + samodzielna podmiana pliku ══════
+
+Co pobierasz:  DWA pliki:
+  1. libftdi1-1.5.tar.bz2 (oryginalne) – z sekcji "Archiwum oryginalne + plik do podmiany"
+  2. bitbang_cbus.c (zmodyfikowany)     – z tej samej sekcji
+
+Skąd:          sekcja "Archiwum oryginalne + plik do podmiany" na dole strony
+
+1. Pobierz OBA pliki ze strony.
+   Oba wylądują w ~/Downloads.
+
+2. W terminalu rozpakuj oryginalne archiwum:
+     cd ~/Downloads
+     bzip2 -d libftdi1-1.5.tar.bz2
+     tar -xf libftdi1-1.5.tar
+
+   Po tych komendach masz katalog:
+     ~/Downloads/libftdi1-1.5
+
+3. PRZED kompilacją skopiuj zmodyfikowany plik do środka biblioteki
+   (podmień oryginalny bitbang_cbus.c na ten zmodyfikowany):
+
+     cp ~/Downloads/bitbang_cbus.c ~/Downloads/libftdi1-1.5/examples/bitbang_cbus.c
+
+   Jeśli terminal zapyta "czy nadpisać?" – wpisz "y" i Enter.
+
+   Alternatywnie: zamiast kopiować gotowy plik, możesz samodzielnie
+   napisać własny kod w ~/Downloads/libftdi1-1.5/examples/bitbang_cbus.c
+   zgodnie z treścią zadania w pliku PDF.
+
+4. Teraz wejdź do katalogu biblioteki i skompiluj:
+     cd ~/Downloads/libftdi1-1.5
+     mkdir build && cd build
+     cmake ../
+     make
+
+
+────────────────────────────────────────────────────────────────
+KROK 2 – Uruchomienie programu (wspólne dla obu ścieżek)
+────────────────────────────────────────────────────────────────
+
+Jesteś w katalogu (dla obu ścieżek):
+  ~/Downloads/libftdi1-1.5/build
+
+1. Uruchom program (jeśli masz uprawnienia root / sudo):
+     sudo ./examples/bitbang_cbus
+
+   Jeśli nie potrzebujesz sudo (np. masz skonfigurowane reguły udev):
+     ./examples/bitbang_cbus
+
+2. Sterowanie LEDami:
+   ┌──────────┬──────────┬─────────────────┐
+   │  Klawisz │  Akcja   │  Która dioda    │
+   ├──────────┼──────────┼─────────────────┤
+   │    1     │ WŁĄCZ    │  LED 1          │
+   │    2     │ WŁĄCZ    │  LED 2          │
+   │    3     │ WŁĄCZ    │  LED 3          │
+   │    4     │ WŁĄCZ    │  LED 4          │
+   │    q     │ WYŁĄCZ   │  LED 1          │
+   │    w     │ WYŁĄCZ   │  LED 2          │
+   │    e     │ WYŁĄCZ   │  LED 3          │
+   │    r     │ WYŁĄCZ   │  LED 4          │
+   │  ESC/x   │ WYJŚCIE  │  Koniec programu│
+   └──────────┴──────────┴─────────────────┘
+
+3. Na ekranie na bieżąco widzisz stan wszystkich 4 LEDów:
+     LEDy: [LED4:OFF] [LED3:OFF] [LED2:OFF] [LED1:OFF]
+
+4. Żeby wyjść z programu, naciśnij ESC lub literę "x".
