@@ -1,0 +1,20 @@
+1. Skopiowanie plikow (interrupt_buttons.c, Makefile, prepare) do katalogu /omap/device
+2. Wejscie do folderu /omap/device/ za pomoca polecenia
+cd /omap/device
+3. Wykonanie polecenia
+. ./prepare
+(tak, tam jest spacja)
+4. Uzycie polecenia make
+5. Wejscie na plytke (telnet omap), jak juz tam jestesmy to wykonujemy polecenie
+cd home
+6. Wlozenie modulu
+insmod interrupt_buttons.ko
+7. Sprawdzenie zaladowania
+dmesg | tail
+8. Test: nacisniecie przyciskow zoltego i niebieskiego, potem:
+dmesg | tail
+Powinno pokazac rozroznienie ktory przycisk zostal wcisniety.
+9. Usuniecie modulu
+rmmod interrupt_buttons
+
+Nagrywamy ekran komputera (OBS) i plytke (telefon).

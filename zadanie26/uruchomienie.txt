@@ -1,0 +1,23 @@
+1. Skopiowanie plikow (timer_driver.c, Makefile, prepare) do katalogu /omap/device
+2. Wejscie do folderu /omap/device/ za pomoca polecenia
+cd /omap/device
+3. Wykonanie polecenia
+. ./prepare
+(tak, tam jest spacja)
+4. Uzycie polecenia make
+5. Wejscie na plytke (telnet omap), jak juz tam jestesmy to wykonujemy polecenie
+cd home
+6. Wlozenie modulu
+insmod timer_driver.ko
+7. Sprawdzenie czy modul zaladowany i czy timer dziala (powinien pisac komunikaty co ok. 1 sekunde)
+dmesg | tail
+8. Test zmiany okresu:
+echo "4" > /dev/sterownik     (zmienia na 4 sekundy)
+echo "8" > /dev/sterownik     (zmienia na 8 sekund)
+echo "1" > /dev/sterownik     (zmiana z powrotem na 1 sekunde)
+Po kazdej zmianie:
+dmesg | tail
+9. Usuniecie modulu
+rmmod timer_driver
+
+Nagrywamy ekran komputera (OBS).
