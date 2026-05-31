@@ -92,7 +92,9 @@ function highlightC(code) {
   var op = '&amp;&amp;|&amp;=|&amp;|&lt;&lt;=|&gt;&gt;=|&lt;&lt;|&gt;&gt;|&lt;=|&gt;=|&lt;:|&lt;%|&lt;|:&gt;|%&gt;|->|==|!=|\\+=|-=|\\*=|\\/=|%=|\\|=|\\^=|\\+\\+|--|\\.\\.\\.|\\|\\||&gt;|(?<![<])\\/|\\[|\\]|\\(|\\)|\\{|\\}|[+*%|^~!,;:.]';
   html = html.replace(re('(?:' + op + ')'), save.bind(null, 'c-op'));
 
-  html = html.replace(/\x01(\d+)\x01/g, function(_, i) { return tokens[i]; });
+  html = html.replace(/\x01(\d+)\x01/g, function fn(_, i) {
+    return tokens[i].replace(/\x01(\d+)\x01/g, fn);
+  });
   return html;
 }
 
