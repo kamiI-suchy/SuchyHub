@@ -4,6 +4,7 @@
 #include <linux/gpio.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
+#include <linux/irq.h>
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Kamil Suchy");
@@ -15,6 +16,11 @@ MODULE_DESCRIPTION("Sterownik przerwan dla przyciskow GPIO68 (zolty) i GPIO69 (n
 #define CM_PER_START_ADDR       0x44E00000
 #define CM_PER_SIZE             0x400
 #define CM_PER_GPIO2_CLKCTRL    0xB0
+
+#define GPIO_IRQSTATUS_0        0x2C
+#define GPIO_IRQSTATUS_1        0x30
+#define GPIO_RISINGDETECT       0x148
+#define GPIO_FALLINGDETECT      0x14C
 
 #define BUTTON_YELLOW           68
 #define BUTTON_BLUE             69
@@ -40,6 +46,7 @@ static irqreturn_t button_blue_isr(int irq, void *dev_id)
 static int __init interrupt_init(void)
 {
 	int ret;
+	int regval;
 	void __iomem *mem;
 	void __iomem *cm_per;
 
@@ -81,19 +88,21 @@ static int __init interrupt_init(void)
 	}
 
 	ret = request_irq(irq_yellow, button_yellow_isr,
-			  IRQF_TRIGGER_FALLING, "btn_yellow", NULL);
+			  0, "btn_yellow", NULL);
 	if (ret) {
 		printk(KERN_ERR "Blad request_irq GPIO68: %d\n", ret);
 		goto err_gpio;
 	}
+	irq_set_irq_type(irq_yellow, IRQ_TYPE_EDGE_BOTH);
 
 	ret = request_irq(irq_blue, button_blue_isr,
-			  IRQF_TRIGGER_FALLING, "btn_blue", NULL);
+			  0, "btn_blue", NULL);
 	if (ret) {
 		printk(KERN_ERR "Blad request_irq GPIO69: %d\n", ret);
 		free_irq(irq_yellow, NULL);
 		goto err_gpio;
 	}
+	irq_set_irq_type(irq_blue, IRQ_TYPE_EDGE_BOTH);
 
 	mem = ioremap(GPIO2_START_ADDR, GPIO2_SIZE);
 	if (!mem) {
@@ -102,10 +111,25 @@ static int __init interrupt_init(void)
 		goto err_irq;
 	}
 
-	iowrite32(PIN_YELLOW_MASK | PIN_BLUE_MASK,
-		  mem + 0x14C);
+	regval = ioread32(mem + GPIO_IRQSTATUS_0);
+	regval |= PIN_YELLOW_MASK;
+	regval |= PIN_BLUE_MASK;
+	iowrite32(regval, mem + GPIO_IRQSTATUS_0);
 
-	iowrite32(0, mem + 0x148);
+	regval = ioread32(mem + GPIO_IRQSTATUS_1);
+	regval |= PIN_YELLOW_MASK;
+	regval |= PIN_BLUE_MASK;
+	iowrite32(regval, mem + GPIO_IRQSTATUS_1);
+
+	regval = ioread32(mem + GPIO_RISINGDETECT);
+	regval |= PIN_YELLOW_MASK;
+	regval |= PIN_BLUE_MASK;
+	iowrite32(regval, mem + GPIO_RISINGDETECT);
+
+	regval = ioread32(mem + GPIO_FALLINGDETECT);
+	regval |= PIN_YELLOW_MASK;
+	regval |= PIN_BLUE_MASK;
+	iowrite32(regval, mem + GPIO_FALLINGDETECT);
 
 	iounmap(mem);
 
