@@ -237,15 +237,15 @@ function renderTask() {
               '<div class="form-row">';
     if (task.needsFields.fullName) {
       html += '<div class="form-g"><label for="fn-' + task.id + '">Imie i nazwisko</label>' +
-              '<input type="text" name="fullName" id="fn-' + task.id + '" value="' + escapeHtml(DEFAULTS.fullName) + '" placeholder="Jan Kowalski"></div>';
+              '<input type="text" name="fullName" id="fn-' + task.id + '" placeholder="Jan Kowalski"></div>';
     }
     if (task.needsFields.albumNumber) {
       html += '<div class="form-g"><label for="an-' + task.id + '">Numer albumu</label>' +
-              '<input type="text" name="albumNumber" id="an-' + task.id + '" value="' + escapeHtml(DEFAULTS.albumNumber) + '" placeholder="60000" maxlength="6"></div>';
+              '<input type="text" name="albumNumber" id="an-' + task.id + '" placeholder="60000" maxlength="6"></div>';
     }
     if (task.needsFields.initials) {
       html += '<div class="form-g"><label for="in-' + task.id + '">Inicjaly (2 litery)</label>' +
-              '<input type="text" name="initials" id="in-' + task.id + '" value="' + escapeHtml(DEFAULTS.initials) + '" placeholder="JK" maxlength="2"></div>';
+              '<input type="text" name="initials" id="in-' + task.id + '" placeholder="JK" maxlength="2"></div>';
     }
     html += '</div></div>';
   }
@@ -278,12 +278,6 @@ function renderTask() {
 
   html += '</div>';
   container.innerHTML = html;
-
-  // initial code render
-  if (task.files && task.files.length > 0) {
-    const fields = getFormValues(fieldsId);
-    generateAllFiles(task, fields, 'code-area-' + task.id);
-  }
 
   // load uruchomienie.txt from file
   if (task.uruchomienie) {
