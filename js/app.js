@@ -39,21 +39,29 @@ function highlightC(code) {
     return save('c-str', m.replace(re('\\\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|[0-7]{1,3}|.)'), '<span class="c-esc">$&</span>'));
   });
 
-  html = html.replace(re('^[ \\t]*#.*$', 'gm'), save.bind(null, 'c-pp'));
+  html = html.replace(re('^[ \\t]*#.*$', 'gm'), function(m) {
+    var inner = m;
+    inner = inner.replace(/\\\s*$/gm, '<span class="c-esc">\\</span>');
+    inner = inner.replace(/##/g, '<span class="c-op">##</span>');
+    inner = inner.replace(/(^[ \t]*#\s*\w+)(.*)$/gm, function(_, hd, rest) {
+      return hd + rest.replace(/(?<!\w)#(?!\s*$|#)/g, '<span class="c-op">#</span>');
+    });
+    return save('c-pp', inner);
+  });
 
-  html = html.replace(re('(0[bB][01]+|0[xX][0-9a-fA-F]+|0[oO]?[0-7]+|\\d+\\.\\d*|\\d*\\.\\d+|\\d+)(?:[eE][+-]?\\d+)?([uUlLfF]*)'), save.bind(null, 'c-num'));
+  html = html.replace(re("(0[bB][01']+|0[xX][0-9a-fA-F']+|0[oO]?[0-7']+|\\d[\\d']*\\.?\\d[\\d']*|\\.\\d[\\d']*)(?:[eE][+-]?\\d[\\d']*)?([uUlLfFiIjJ]*)"), save.bind(null, 'c-num'));
 
-  var kw = 'auto|break|case|const|continue|default|do|else|enum|extern|for|goto|if|inline|register|restrict|return|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|while|_Alignas|_Alignof|_Atomic|_Bool|_Complex|_Generic|_Imaginary|_Noreturn|_Static_assert|_Thread_local|typeof|__inline__|__attribute__|__volatile__|__const__|__restrict__|__asm__|__extension__|__init|__exit|__maybe_unused|__user|__iomem';
+  var kw = 'alignas|alignof|atomic_bool|auto|bool|break|case|const|constexpr|continue|default|do|else|enum|extern|false|for|goto|if|inline|noreturn|NULL|nullptr|register|restrict|return|signed|sizeof|static|static_assert|struct|switch|thread_local|true|typedef|typeof|typeof_unqual|union|unsigned|volatile|while|_Alignas|_Alignof|_Atomic|_Bool|_Complex|_Generic|_Imaginary|_Noreturn|_Static_assert|_Thread_local|__inline__|__attribute__|__volatile__|__const__|__restrict__|__asm__|__extension__|__init|__exit|__maybe_unused|__user|__iomem';
   html = html.replace(re('(?<![' + W + '])(?:' + kw + ')(?![' + W + '])'), '<span class="c-kw">$&</span>');
 
-  html = html.replace(re('(?<![' + W + '])(?:NULL|true|false|bool)(?![' + W + '])'), '<span class="c-kw">$&</span>');
-
-  var types = 'void|char|short|int|long|float|double|u8|u16|u32|u64|s8|s16|s32|s64|size_t|ssize_t|ptrdiff_t|intptr_t|uintptr_t|intmax_t|uintmax_t|loff_t|sector_t|dev_t|irqreturn_t|blk_status_t|uint8_t|uint16_t|uint32_t|uint64_t|int8_t|int16_t|int32_t|int64_t|pid_t|uid_t|gid_t|mode_t|off_t|wchar_t|va_list';
+  var types = 'void|char|short|int|long|float|double|u8|u16|u32|u64|s8|s16|s32|s64|size_t|ssize_t|ptrdiff_t|intptr_t|uintptr_t|intmax_t|uintmax_t|nullptr_t|max_align_t|loff_t|sector_t|dev_t|irqreturn_t|blk_status_t|uint8_t|uint16_t|uint32_t|uint64_t|int8_t|int16_t|int32_t|int64_t|pid_t|uid_t|gid_t|mode_t|off_t|wchar_t|va_list|FILE|clock_t|time_t';
   html = html.replace(re('(?<![' + W + '])(?:' + types + ')(?![' + W + '])'), '<span class="c-type">$&</span>');
 
   html = html.replace(re('(?<![' + W + '])([A-Z_][A-Z0-9_]{2,})(?![' + W + '])'), '<span class="c-type">$1</span>');
 
   html = html.replace(re('(?<![' + W + '])([' + L + '][' + W + ']*)\\s*\\(', 'g'), '<span class="c-func">$1</span>(');
+
+  html = html.replace(re('(?<![' + W + '])([' + L + '][' + W + ']*)\\s*:(?![' + W + '])'), '<span class="c-lbl">$1</span>:');
 
   html = html.replace(/->|<<=|>>=|<<|>>|<=|>=|==|!=|\+=|-=|\*=|\/=|%=|&=|\|=|\^=|&&|\|\||\+\+|--|\.\.\.|[-+*\/%&|^~!=<>,;:.?]/g, '<span class="c-op">$&</span>');
 
