@@ -21,15 +21,18 @@ function escapeHtml(str) {
 function highlightC(code) {
   var html = code;
   html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  html = html.replace(/(\/\*[\s\S]*?\*\/|\/\/[^\n]*)/g, '<span class="c-cmt">$1</span>');
-  html = html.replace(/'((?:[^'\\]|\\.)*)'/g, '<span class="c-str">$&</span>');
-  html = html.replace(/"((?:[^"\\]|\\.)*)"/g, '<span class="c-str">$&</span>');
+  var tokens = [];
+  function save(cls, m) { tokens.push('<span class="' + cls + '">' + m + '</span>'); return '\x00' + (tokens.length - 1) + '\x00'; }
+  html = html.replace(/(\/\*[\s\S]*?\*\/|\/\/[^\n]*)/g, save.bind(null, 'c-cmt'));
+  html = html.replace(/'((?:[^'\\]|\\.)*)'/g, save.bind(null, 'c-str'));
+  html = html.replace(/"((?:[^"\\]|\\.)*)"/g, save.bind(null, 'c-str'));
   html = html.replace(/#\s*(include|define|undef|ifdef|ifndef|if|else|elif|endif|pragma|error|line)\b/g, '<span class="c-pp">$&</span>');
   html = html.replace(/\b(static|extern|const|volatile|struct|enum|union|typedef|sizeof|return|if|else|for|while|do|switch|case|break|continue|goto|default|void|char|int|long|short|float|double|signed|unsigned|auto|register|bool|true|false|NULL|__init|__exit|__maybe_unused|__user|__iomem)\b/g, '<span class="c-kw">$&</span>');
   html = html.replace(/\b(u8|u16|u32|u64|s8|s16|s32|s64|size_t|ssize_t|loff_t|sector_t|dev_t|irqreturn_t|blk_status_t)\b/g, '<span class="c-type">$&</span>');
   html = html.replace(/\b([A-Z_][A-Z0-9_]{2,})\b/g, '<span class="c-type">$1</span>');
   html = html.replace(/\b([a-zA-Z_]\w*)\s*\(/g, '<span class="c-func">$1</span>(');
   html = html.replace(/\b(\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g, '<span class="c-num">$1</span>');
+  html = html.replace(/\x00(\d+)\x00/g, function(_, i) { return tokens[i]; });
   return html;
 }
 
