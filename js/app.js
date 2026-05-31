@@ -289,7 +289,7 @@ function renderTask() {
 
   // load uruchomienie.txt from file
   if (task.uruchomienie) {
-    fetch(task.uruchomienie)
+    fetch(task.uruchomienie, { cache: 'no-cache' })
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
       .then(text => { const el = document.getElementById('uruch-content'); if (el) el.textContent = text; })
       .catch(() => { const el = document.getElementById('uruch-content'); if (el) el.textContent = 'Nie mozna wczytac pliku ' + task.uruchomienie; });
