@@ -250,14 +250,17 @@ function renderTask() {
     html += '</div></div>';
   }
 
-  // generate buttons for code files
+  // generate buttons or auto-generate code
+  var hasFields = task.needsFields && (task.needsFields.fullName || task.needsFields.albumNumber || task.needsFields.initials);
   if (task.files && task.files.length > 0) {
-    html += '<div class="multi-btns" id="gen-btns-' + task.id + '">';
-    task.files.forEach((file, idx) => {
-      const btnId = 'gen-' + task.id + '-' + idx;
-      html += '<button class="btn btn-p" id="' + btnId + '" onclick="generateFile(' + task.id + ', ' + idx + ', \'' + fieldsId + '\')">Generuj ' + escapeHtml(file.name) + '</button>';
-    });
-    html += '</div>';
+    if (hasFields) {
+      html += '<div class="multi-btns" id="gen-btns-' + task.id + '">';
+      task.files.forEach((file, idx) => {
+        const btnId = 'gen-' + task.id + '-' + idx;
+        html += '<button class="btn btn-p" id="' + btnId + '" onclick="generateFile(' + task.id + ', ' + idx + ', \'' + fieldsId + '\')">Generuj ' + escapeHtml(file.name) + '</button>';
+      });
+      html += '</div>';
+    }
     html += '<div id="code-area-' + task.id + '"></div>';
   }
 
@@ -278,6 +281,11 @@ function renderTask() {
 
   html += '</div>';
   container.innerHTML = html;
+
+  // auto-generate code for tasks without fields
+  if (!hasFields && task.files && task.files.length > 0) {
+    generateAllFiles(task, {}, 'code-area-' + task.id);
+  }
 
   // load uruchomienie.txt from file
   if (task.uruchomienie) {
