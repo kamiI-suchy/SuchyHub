@@ -1,100 +1,74 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zadanie 21 – sterownik znakowy LED</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style.css" rel="stylesheet">
-    <style>
-        #inicjaly { text-transform: uppercase; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadanie 21 – sterownik znakowy LED</title>
+<link rel="stylesheet" href="../style.css">
+<style>#inicjaly{text-transform:uppercase}</style>
 </head>
 <body>
-    <div class="card-main">
-        <h1>Zadanie 21 – sterownik znakowy LED</h1>
-        <p class="desc"><a class="pdf-link" href="lab21.pdf" target="_blank">Otwórz treść zadania (PDF)</a></p>
-        <p class="desc">Wpisz imię i nazwisko oraz inicjały (litery A–Z), które mają zapalać LED po przesłaniu do urządzenia znakowego.</p>
+<div class="card card--medium">
+    <h1>Zadanie 21 – sterownik znakowy LED</h1>
+    <p class="desc"><a class="pdf-link" href="lab21.pdf" target="_blank">Otworz tresc zadania (PDF)</a></p>
+    <p class="desc">Wpisz imie i nazwisko oraz inicjaly (litery A–Z), ktore maja zapalac LED po przeslaniu do urzadzenia znakowego.</p>
 
-        <div class="accordion" id="acc1">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#c1"
-                            aria-expanded="false">
-                        Pokaż instrukcję do wykonania zadania
-                    </button>
-                </h2>
-                <div id="c1" class="accordion-collapse collapse" data-bs-parent="#acc1">
-                    <div class="accordion-body" id="c1-body">Ładowanie instrukcji...</div>
-                </div>
-            </div>
-        </div>
+    <details class="accordion" id="acc">
+        <summary>Pokaz instrukcje do wykonania zadania</summary>
+        <div class="acc-body" id="acc-body">Ladowanie instrukcji...</div>
+    </details>
 
-        <label for="name">Imię i nazwisko:</label>
-        <input type="text" id="name" placeholder="np. Jan Kowalski">
+    <label for="name">Imie i nazwisko:</label>
+    <input type="text" id="name" placeholder="np. Jan Kowalski">
 
-        <label for="inicjaly">Inicjały (litery A–Z):</label>
-        <input type="text" id="inicjaly" placeholder="np. JK" maxlength="5" class="uppercase">
+    <label for="inicjaly">Inicjaly (litery A–Z):</label>
+    <input type="text" id="inicjaly" placeholder="np. JK" maxlength="5" class="upper">
 
-        <button class="btn-primary mt-btn" onclick="generuj()">Generuj kod</button>
+    <button class="btn mt" onclick="gen()">Generuj kod</button>
 
-        <div id="files" class="files-container"></div>
+    <div id="files" class="file-list"></div>
 
-        <a class="back" href="../index.html">&larr; Powrót</a>
-    </div>
+    <a class="back-link" href="../index.html">Powrot</a>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../app.js"></script>
-    <script>
-        SuchyHub.initAccordion('c1', 'c1-body', 'uruchomienie.txt');
+<script src="../app.js"></script>
+<script>
+    Suchy.accordion('acc', 'acc-body', 'uruchomienie.txt');
 
-        var ledCharTemplate = '', makefileText = '', prepareText = '';
+    let led='', mk='', prep='';
 
-        async function ensureTemplates() {
-            if (ledCharTemplate && makefileText && prepareText) return;
-            var _a = await Promise.all([
-                fetch('led_char.c', { cache: 'no-store' }),
-                fetch('Makefile', { cache: 'no-store' }),
-                fetch('prepare', { cache: 'no-store' })
+    async function load(){
+        if(led&&mk&&prep) return;
+        const [a,b,c]=await Promise.all([
+            fetch('led_char.c',{cache:'no-store'}),
+            fetch('Makefile',{cache:'no-store'}),
+            fetch('prepare',{cache:'no-store'})
+        ]);
+        [led,mk,prep]=await Promise.all([a.text(),b.text(),c.text()]);
+    }
+
+    function initialsCheck(s){
+        const u=[...new Set(s.split(''))];
+        return u.map(c=>`ch=='${c}'`).join('||');
+    }
+
+    async function gen(){
+        const name=document.getElementById('name').value.trim();
+        const raw=document.getElementById('inicjaly').value.trim().toUpperCase();
+        const init=raw.replace(/[^A-Z]/g,'');
+        if(!name){alert('Wpisz imie i nazwisko.');return;}
+        if(!init){alert('Wpisz inicjaly (litery A–Z).');return;}
+        try{
+            await load();
+            let code=led.replace(/return ch ==[^;]*;/,`return ${initialsCheck(init)};`);
+            code=code.replace(/MODULE_AUTHOR\("[^"]*"\)/,`MODULE_AUTHOR("${Suchy.escapeC(name)}")`);
+            Suchy.renderFiles('files',[
+                {name:'led_char.c',content:code},
+                {name:'Makefile',content:mk},
+                {name:'prepare',content:prep}
             ]);
-            var _b = await Promise.all([_a[0].text(), _a[1].text(), _a[2].text()]);
-            ledCharTemplate = _b[0]; makefileText = _b[1]; prepareText = _b[2];
-        }
-
-        function buildInitialsCheck(initials) {
-            var unique = [];
-            for (var i = 0; i < initials.length; i++) {
-                if (unique.indexOf(initials[i]) === -1) unique.push(initials[i]);
-            }
-            return unique.map(function(ch) { return "ch == '" + ch + "'"; }).join(' || ');
-        }
-
-        async function generuj() {
-            var name = document.getElementById('name').value.trim();
-            var raw = document.getElementById('inicjaly').value.trim().toUpperCase();
-            var initials = raw.replace(/[^A-Z]/g, '');
-
-            if (!name) { alert('Proszę wpisać imię i nazwisko.'); return; }
-            if (!initials) { alert('Proszę wpisać inicjały (litery A–Z).'); return; }
-
-            try {
-                await ensureTemplates();
-                var check = buildInitialsCheck(initials);
-                var escapedName = SuchyHub.escapeCString(name);
-                var updated = ledCharTemplate
-                    .replace(/return ch ==[^;]*;/, 'return ' + check + ';')
-                    .replace(/MODULE_AUTHOR\("[^"]*"\)/, 'MODULE_AUTHOR("' + escapedName + '")');
-
-                SuchyHub.renderCodeBlocks('files', [
-                    { name: 'led_char.c', content: updated },
-                    { name: 'Makefile', content: makefileText },
-                    { name: 'prepare', content: prepareText }
-                ]);
-            } catch (e) {
-                alert('Błąd generowania kodu: ' + e.message);
-            }
-        }
-    </script>
+        }catch(e){alert('Blad: '+e.message);}
+    }
+</script>
 </body>
 </html>

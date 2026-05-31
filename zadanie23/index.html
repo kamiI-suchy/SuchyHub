@@ -1,76 +1,56 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zadanie 23 – USB: libftdi1 i ft232r_prog</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadanie 23 – USB: libftdi1 i ft232r_prog</title>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <div class="card-main wide">
-        <h1>Zadanie 23 – USB: libftdi1 (odczyt ID) i ft232r_prog (konfiguracja)</h1>
-        <p class="desc"><a class="pdf-link" href="lab23.pdf" target="_blank">Otworz tresc zadania (PDF)</a></p>
-        <p class="desc">
-            Wyjatkowo robimy calosc na PC. Zadanie obejmuje odczyt konfiguracji ukladu FT232R za pomoca narzedzia <code class="inline">ft232r_prog</code> oraz odczyt unikalnego ID ukladu przez przyklad <code class="inline">simple</code> z biblioteki libftdi1.
-        </p>
+<div class="card card--wide">
+    <h1>Zadanie 23 – USB: libftdi1 (odczyt ID) i ft232r_prog (konfiguracja)</h1>
+    <p class="desc"><a class="pdf-link" href="lab23.pdf" target="_blank">Otworz tresc zadania (PDF)</a></p>
+    <p class="desc">
+        Wyjatkowo robimy calosc na PC. Zadanie obejmuje odczyt konfiguracji ukladu FT232R za pomoca narzedzia <code class="inline">ft232r_prog</code> oraz odczyt unikalnego ID ukladu przez przyklad <code class="inline">simple</code> z biblioteki libftdi1.
+    </p>
 
-        <div class="accordion" id="acc1">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#c1"
-                            aria-expanded="false">
-                        Pokaz instrukcje do wykonania zadania
-                    </button>
-                </h2>
-                <div id="c1" class="accordion-collapse collapse" data-bs-parent="#acc1">
-                    <div class="accordion-body" id="c1-body">Ladowanie instrukcji...</div>
-                </div>
-            </div>
+    <details class="accordion" id="acc">
+        <summary>Pokaz instrukcje do wykonania zadania</summary>
+        <div class="acc-body" id="acc-body">Ladowanie instrukcji...</div>
+    </details>
+
+    <h2>Pliki do pobrania</h2>
+
+    <div class="file-row">
+        <div>
+            <div class="file-row-strong">ft232r_prog-1.25.tar.gz</div>
+            <div class="file-row-muted">Narzedzie do odczytu konfiguracji FT232R</div>
         </div>
-
-        <h2>Pliki do pobrania</h2>
-
-        <div class="file-card">
-            <div class="file-info">
-                <div>
-                    <div class="file-name">ft232r_prog-1.25.tar.gz</div>
-                    <div class="file-meta">Narzedzie do odczytu konfiguracji FT232R</div>
-                </div>
-            </div>
-            <a class="btn-primary" href="ft232r_prog-1.25.tar.gz" download>Pobierz</a>
-        </div>
-
-        <div class="file-card">
-            <div class="file-info">
-                <div>
-                    <div class="file-name">libftdi1-1.5.tar.bz2</div>
-                    <div class="file-meta">Biblioteka libftdi1 – komunikacja z ukladami FTDI</div>
-                </div>
-            </div>
-            <a class="btn-primary" href="libftdi1-1.5.tar.bz2" download>Pobierz</a>
-        </div>
-
-        <h2>Archiwum oryginalne</h2>
-
-        <div class="file-card">
-            <div class="file-info">
-                <div>
-                    <div class="file-name">libftdi1-1.5.tar.bz2 (oryginalne)</div>
-                    <div class="file-meta">Oryginalna biblioteka libftdi1 bez zmian – dla osob, ktore chca same zmodyfikowac <code class="inline">bitbang_cbus.c</code> w zadaniu 24.</div>
-                </div>
-            </div>
-            <a class="btn-primary" href="oryginalneArchiwum/libftdi1-1.5.tar.bz2" download>Pobierz</a>
-        </div>
-
-        <a class="back" href="../index.html">&larr; Powrot</a>
+        <a class="btn btn--sm" href="ft232r_prog-1.25.tar.gz" download>Pobierz</a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../app.js"></script>
-    <script>
-        SuchyHub.initAccordion('c1', 'c1-body', 'uruchomienie.txt');
-    </script>
+    <div class="file-row">
+        <div>
+            <div class="file-row-strong">libftdi1-1.5.tar.bz2</div>
+            <div class="file-row-muted">Biblioteka libftdi1 – komunikacja z ukladami FTDI</div>
+        </div>
+        <a class="btn btn--sm" href="libftdi1-1.5.tar.bz2" download>Pobierz</a>
+    </div>
+
+    <h2>Archiwum oryginalne</h2>
+
+    <div class="file-row">
+        <div>
+            <div class="file-row-strong">libftdi1-1.5.tar.bz2 (oryginalne)</div>
+            <div class="file-row-muted">Oryginalna biblioteka libftdi1 bez zmian – dla osob, ktore chca same zmodyfikowac <code class="inline">bitbang_cbus.c</code> w zadaniu 24.</div>
+        </div>
+        <a class="btn btn--sm" href="oryginalneArchiwum/libftdi1-1.5.tar.bz2" download>Pobierz</a>
+    </div>
+
+    <a class="back-link" href="../index.html">Powrot</a>
+</div>
+
+<script src="../app.js"></script>
+<script>Suchy.accordion('acc','acc-body','uruchomienie.txt');</script>
 </body>
 </html>

@@ -1,214 +1,126 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zadanie 18 – LED Morse</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style.css" rel="stylesheet">
-    <style>
-        #inicjaly { text-transform: uppercase; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadanie 18 – LED Morse</title>
+<link rel="stylesheet" href="../style.css">
+<style>#inicjaly{text-transform:uppercase}</style>
 </head>
 <body>
-    <div class="card-main wide">
-        <h1>Zadanie 18 – miganie LED kodem Morse'a</h1>
-        <p class="desc"><a class="pdf-link" href="lab18.pdf" target="_blank">Otwórz treść zadania (PDF)</a></p>
+<div class="card card--wide">
+    <h1>Zadanie 18 – miganie LED kodem Morse'a</h1>
+    <p class="desc"><a class="pdf-link" href="lab18.pdf" target="_blank">Otworz tresc zadania (PDF)</a></p>
 
-        <div class="accordion" id="acc1">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#c1"
-                            aria-expanded="false">
-                        Pokaż instrukcję do wykonania zadania
-                    </button>
-                </h2>
-                <div id="c1" class="accordion-collapse collapse" data-bs-parent="#acc1">
-                    <div class="accordion-body" id="c1-body">Ładowanie instrukcji...</div>
-                </div>
-            </div>
-        </div>
+    <details class="accordion" id="acc">
+        <summary>Pokaz instrukcje do wykonania zadania</summary>
+        <div class="acc-body" id="acc-body">Ladowanie instrukcji...</div>
+    </details>
 
-        <p class="desc" style="margin-top:16px">Wpisz swoje inicjały.</p>
+    <p class="desc" style="margin-top:16px">Wpisz swoje inicjaly.</p>
 
-        <label for="inicjaly">Inicjały (litery A–Z):</label>
-        <input type="text" id="inicjaly" placeholder="np. JK" maxlength="5" class="uppercase">
+    <label for="inicjaly">Inicjaly (litery A–Z):</label>
+    <input type="text" id="inicjaly" placeholder="np. JK" maxlength="5" class="upper">
 
-        <div class="btn-row">
-            <button class="btn-primary" onclick="generuj()">Generuj kod</button>
-            <button class="btn-primary" onclick="generujKrotszaWersje()">Generuj krótszą wersję</button>
-        </div>
-
-        <div id="output-wrapper" class="code-block-wrapper">
-            <div class="btn-group">
-                <button class="action-btn" onclick="SuchyHub.copyToClipboard(document.getElementById('output').textContent)">Kopiuj</button>
-                <button class="action-btn" onclick="SuchyHub.downloadFile(document.getElementById('output').textContent,'prog.c')">Pobierz</button>
-            </div>
-            <pre class="code-block" id="output"></pre>
-        </div>
-
-        <a class="back" href="../index.html">&larr; Powrót</a>
+    <div class="btn-row">
+        <button class="btn" onclick="gen(true)">Generuj kod</button>
+        <button class="btn" onclick="gen(false)">Generuj krotsza wersje</button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../app.js"></script>
-    <script>
-        SuchyHub.initAccordion('c1', 'c1-body', 'uruchomienie.txt');
+    <div id="out-wrap" class="code-wrap">
+        <div class="code-actions">
+            <button onclick="Suchy.copy(document.getElementById('out').textContent)">Kopiuj</button>
+            <button onclick="Suchy.download(document.getElementById('out').textContent,'prog.c')">Pobierz</button>
+        </div>
+        <pre class="code" id="out"></pre>
+    </div>
 
-        var MORSE = {
-            A:'.-', B:'-...', C:'-.-.', D:'-..', E:'.', F:'..-.',
-            G:'--.', H:'....', I:'..', J:'.---', K:'-.-', L:'.-..',
-            M:'--', N:'-.', O:'---', P:'.--.', Q:'--.-', R:'.-.',
-            S:'...', T:'-', U:'..-', V:'...-', W:'.--', X:'-..-',
-            Y:'-.--', Z:'--..'
-        };
+    <a class="back-link" href="../index.html">Powrot</a>
+</div>
 
-        var DOT = 500000, DASH = 1500000, SYM_GAP = 500000;
-        var LET_GAP = 1500000, WORD_GAP = 3500000;
-        var EXTRA_LET_GAP = LET_GAP - SYM_GAP;
-        var EXTRA_WORD_GAP = WORD_GAP - SYM_GAP;
+<script src="../app.js"></script>
+<script>
+    Suchy.accordion('acc', 'acc-body', 'uruchomienie.txt');
 
-        function makeSymbolLines(sym, last, lastLetter, useSafe) {
-            var onTime = sym === '.' ? DOT : DASH;
-            var usleepFn = useSafe ? 'safe_usleep' : 'usleep';
-            var lines = [];
-            lines.push('\t\tfprintf(brightness, "1\\n"); fflush(brightness); ' + usleepFn + '(' + onTime + ');');
-            lines.push('\t\tfprintf(brightness, "0\\n"); fflush(brightness); ' + usleepFn + '(' + SYM_GAP + ');');
-            if (last) {
-                if (lastLetter) {
-                    lines.push('\t\t' + usleepFn + '(' + EXTRA_WORD_GAP + ');');
-                } else {
-                    lines.push('\t\t' + usleepFn + '(' + EXTRA_LET_GAP + ');');
-                }
-            }
-            return lines;
-        }
+    const M = {A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',I:'..',J:'.---',
+               K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',Q:'--.-',R:'.-.',S:'...',
+               T:'-',U:'..-',V:'...-',W:'.--',X:'-..-',Y:'-.--',Z:'--..'};
+    const DOT=500000, DASH=1500000, SG=500000;
+    const LG=1500000, WG=3500000;
+    const ELG=LG-SG, EWG=WG-SG;
 
-        function letterLines(letter, lastLetter, useSafe) {
-            var pattern = MORSE[letter];
-            if (!pattern) return [];
-            var lines = [];
-            for (var i = 0; i < pattern.length; i++) {
-                var isLast = i === pattern.length - 1;
-                makeSymbolLines(pattern[i], isLast, lastLetter, useSafe).forEach(function(l) { lines.push(l); });
-            }
-            return lines;
-        }
+    function symLines(sym,last,lastLet,safe){
+        const on=sym==='.'?DOT:DASH, fn=safe?'safe_usleep':'usleep';
+        const a=[`\t\tfprintf(brightness,"1\\n");fflush(brightness);${fn}(${on});`,
+                 `\t\tfprintf(brightness,"0\\n");fflush(brightness);${fn}(${SG});`];
+        if(last) a.push(`\t\t${fn}(${lastLet?EWG:ELG});`);
+        return a;
+    }
 
-        function buildBody(inicjaly, useSafe) {
-            var bodyLines = [];
-            for (var i = 0; i < inicjaly.length; i++) {
-                var isLast = i === inicjaly.length - 1;
-                letterLines(inicjaly[i], isLast, useSafe).forEach(function(l) { bodyLines.push(l); });
-            }
-            return bodyLines;
-        }
+    function letLines(ch,lastLet,safe){
+        const p=M[ch]; if(!p) return [];
+        const a=[];
+        for(let i=0;i<p.length;i++) symLines(p[i],i===p.length-1,lastLet,safe).forEach(l=>a.push(l));
+        return a;
+    }
 
-        function validate(inicjaly) {
-            for (var i = 0; i < inicjaly.length; i++) {
-                if (!MORSE[inicjaly[i]]) {
-                    alert('Nieznana litera: ' + inicjaly[i]);
-                    return false;
-                }
-            }
-            return true;
-        }
+    function body(init,safe){
+        const a=[];
+        for(let i=0;i<init.length;i++) letLines(init[i],i===init.length-1,safe).forEach(l=>a.push(l));
+        return a;
+    }
 
-        function getInit() {
-            var raw = document.getElementById('inicjaly').value.trim().toUpperCase();
-            var inicjaly = raw.replace(/[^A-Z]/g, '');
-            if (inicjaly.length === 0) { alert('Proszę wpisać inicjały (litery A–Z).'); return null; }
-            if (!validate(inicjaly)) return null;
-            return inicjaly;
-        }
+    function getInit(){
+        const raw=document.getElementById('inicjaly').value.trim().toUpperCase();
+        const init=raw.replace(/[^A-Z]/g,'');
+        if(!init.length){alert('Wpisz inicjaly (litery A–Z).');return null;}
+        for(const c of init) if(!M[c]){alert('Nieznana litera: '+c);return null;}
+        return init;
+    }
 
-        function showCode(lines) {
-            document.getElementById('output').textContent = lines.join('\n');
-            document.getElementById('output-wrapper').classList.add('visible');
-        }
+    function show(lines){
+        document.getElementById('out').textContent=lines.join('\n');
+        document.getElementById('out-wrap').classList.add('show');
+    }
 
-        function generuj() {
-            var inicjaly = getInit();
-            if (!inicjaly) return;
-
-            var bodyLines = buildBody(inicjaly, true);
-            showCode([
-                '#include <stdio.h>',
-                '#include <unistd.h>',
-                '#include <signal.h>',
-                '#include <stdlib.h>',
-                '#include <stdbool.h>',
-                '',
-                'static FILE *trigger    = NULL;',
-                'static FILE *brightness = NULL;',
-                'static volatile sig_atomic_t keep_running = 1;',
-                '',
-                'static void handle_sigint(int sig) {',
-                '\t(void)sig;',
-                '\tkeep_running = 0;',
-                '}',
-                '',
-                'static void safe_usleep(unsigned usec) {',
-                '\tconst unsigned SLICE = 100000;',
-                '\twhile (usec > 0 && keep_running) {',
-                '\t\tunsigned slice = (usec > SLICE) ? SLICE : usec;',
-                '\t\tusleep(slice);',
-                '\t\tusec -= slice;',
-                '\t}',
-                '}',
-                '',
-                'int main() {',
-                '\ttrigger    = fopen("/sys/class/leds/beaglebone:green:usr3/trigger",    "w");',
-                '\tbrightness = fopen("/sys/class/leds/beaglebone:green:usr3/brightness", "w");',
-                '',
-                '\tif (!trigger || !brightness) {',
-                '\t\tperror("Błąd otwarcia plików sysfs");',
-                '\t\treturn 1;',
-                '\t}',
-                '',
-                '\tsignal(SIGINT, handle_sigint);',
-                '',
-                '\tfprintf(trigger, "none\\n");',
-                '\tfflush(trigger);',
-                '',
-                '\twhile (keep_running) {'
-            ].concat(bodyLines).concat([
-                '\t}',
-                '',
-                '\tfprintf(brightness, "0\\n");',
-                '\tfflush(brightness);',
-                '\tfclose(brightness);',
-                '\tfclose(trigger);',
-                '\treturn 0;',
-                '}'
-            ]));
-        }
-
-        function generujKrotszaWersje() {
-            var inicjaly = getInit();
-            if (!inicjaly) return;
-
-            var bodyLines = buildBody(inicjaly, false);
-            showCode([
-                '#include <stdio.h>',
-                '#include <unistd.h>',
-                '',
-                'int main() {',
-                '\tFILE * trigger    = fopen("/sys/class/leds/beaglebone:green:usr3/trigger",    "w");',
-                '\tFILE * brightness = fopen("/sys/class/leds/beaglebone:green:usr3/brightness", "w");',
-                '',
-                '\tfprintf(trigger, "none\\n");',
-                '\tfflush(trigger);',
-                '',
-                '\twhile(1) {'
-            ].concat(bodyLines).concat([
-                '\t}',
-                '',
-                '\treturn 0;',
-                '}'
-            ]));
-        }
-    </script>
+    function gen(safe){
+        const init=getInit(); if(!init) return;
+        const b=body(init,safe);
+        if(safe) show([
+            '#include <stdio.h>','#include <unistd.h>','#include <signal.h>',
+            '#include <stdlib.h>','#include <stdbool.h>','',
+            'static FILE *trigger=NULL;','static FILE *brightness=NULL;',
+            'static volatile sig_atomic_t keep_running=1;','',
+            'static void handle_sigint(int sig){(void)sig;keep_running=0;}','',
+            'static void safe_usleep(unsigned usec){',
+            '\tconst unsigned SLICE=100000;',
+            '\twhile(usec>0&&keep_running){',
+            '\t\tunsigned slice=(usec>SLICE)?SLICE:usec;',
+            '\t\tusleep(slice);usec-=slice;',
+            '\t}',
+            '}','',
+            'int main(){',
+            '\ttrigger=fopen("/sys/class/leds/beaglebone:green:usr3/trigger","w");',
+            '\tbrightness=fopen("/sys/class/leds/beaglebone:green:usr3/brightness","w");',
+            '\tif(!trigger||!brightness){perror("Blad otwarcia plikow sysfs");return 1;}',
+            '\tsignal(SIGINT,handle_sigint);',
+            '\tfprintf(trigger,"none\\n");fflush(trigger);',
+            '\twhile(keep_running){'
+        ].concat(b).concat([
+            '\t}',
+            '\tfprintf(brightness,"0\\n");fflush(brightness);',
+            '\tfclose(brightness);fclose(trigger);return 0;',
+            '}'
+        ]));
+        else show([
+            '#include <stdio.h>','#include <unistd.h>','',
+            'int main(){',
+            '\tFILE*trigger=fopen("/sys/class/leds/beaglebone:green:usr3/trigger","w");',
+            '\tFILE*brightness=fopen("/sys/class/leds/beaglebone:green:usr3/brightness","w");',
+            '\tfprintf(trigger,"none\\n");fflush(trigger);',
+            '\twhile(1){'
+        ].concat(b).concat(['\t}','\treturn 0;','}']));
+    }
+</script>
 </body>
 </html>

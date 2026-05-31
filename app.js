@@ -1,191 +1,127 @@
-/* ============================================================
-   SuchyHub – shared JavaScript utilities
-   ============================================================ */
+/* ═══════════════════════════════════════════
+   SuchyHub — shared JS
+   ═══════════════════════════════════════════ */
 
-const SuchyHub = (function () {
+const Suchy = {
 
-    // ---- clipboard ----
-
-    function copyToClipboard(text, btnElement) {
-        if (!navigator.clipboard) {
-            fallbackCopy(text);
-            return;
+    /* copy text, show toast */
+    async copy(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            const t = document.createElement('textarea');
+            t.value = text; t.style.cssText = 'position:fixed;left:-9999px';
+            document.body.append(t); t.select();
+            document.execCommand('copy'); t.remove();
         }
-        navigator.clipboard.writeText(text).then(function () {
-            showToast('Skopiowano!');
-        }).catch(function () {
-            fallbackCopy(text);
-        });
-    }
+        this._toast('Skopiowano!');
+    },
 
-    function fallbackCopy(text) {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); showToast('Skopiowano!'); } catch (e) { /* ignore */ }
-        document.body.removeChild(ta);
-    }
-
-    // ---- toast ----
-
-    function showToast(message) {
-        var container = document.querySelector('.toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.className = 'toast-container';
-            document.body.appendChild(container);
-        }
-        var msg = document.createElement('div');
-        msg.className = 'toast-msg';
-        msg.textContent = message;
-        container.appendChild(msg);
-        setTimeout(function () {
-            if (msg.parentNode) msg.parentNode.removeChild(msg);
-        }, 2200);
-    }
-
-    // ---- download ----
-
-    function downloadFile(text, filename) {
-        var blob = new Blob([text], { type: 'text/plain' });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    /* download text as file */
+    download(text, name) {
+        const url = URL.createObjectURL(new Blob([text], { type: 'text/octet-stream' }));
+        const a = document.createElement('a');
+        a.href = url; a.download = name;
+        document.body.append(a); a.click(); a.remove();
         URL.revokeObjectURL(url);
-    }
+    },
 
-    // ---- escape -----
+    /* escape for C string literal */
+    escapeC(s) {
+        return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+                .replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t');
+    },
 
-    function escapeCString(text) {
-        return text
-            .replace(/\\/g, '\\\\')
-            .replace(/"/g, '\\"')
-            .replace(/\n/g, '\\n')
-            .replace(/\r/g, '\\r')
-            .replace(/\t/g, '\\t');
-    }
+    /* fetch text from url */
+    async _fetch(url) {
+        const r = await fetch(url, { cache: 'no-store' });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.text();
+    },
 
-    // ---- accordion lazy-load ----
+    /* show code block */
+    _show(el) {
+        const w = el.closest('.code-wrap');
+        if (w) w.classList.add('show');
+    },
 
-    function initAccordion(collapseId, bodyId, fetchUrl) {
-        var collapseEl = document.getElementById(collapseId);
-        var bodyEl = document.getElementById(bodyId);
-        if (!collapseEl || !bodyEl) return;
-        var loaded = false;
+    /* render a single code block into container */
+    _block(container, label, content, fname) {
+        const d = document.createElement('div');
 
-        collapseEl.addEventListener('show.bs.collapse', function () {
-            if (loaded) return;
-            loaded = true;
-            fetch(fetchUrl)
-                .then(function (r) {
-                    if (!r.ok) throw new Error('Błąd ' + r.status);
-                    return r.text();
-                })
-                .then(function (text) {
-                    bodyEl.textContent = text;
-                })
-                .catch(function (err) {
-                    bodyEl.textContent = 'Nie udało się wczytać instrukcji: ' + err.message;
-                });
-        });
-    }
+        const lbl = document.createElement('div');
+        lbl.className = 'file-label'; lbl.textContent = label;
+        d.append(lbl);
 
-    // ---- fetch + display ----
+        const wrap = document.createElement('div');
+        wrap.className = 'code-wrap show';
 
-    function fetchAndDisplay(url, elementOrId) {
-        var el = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
-        if (!el) return;
-        el.textContent = 'Wczytywanie pliku ' + url + '...';
-        fetch(url, { cache: 'no-store' })
-            .then(function (r) {
-                if (!r.ok) throw new Error('Nie udało się pobrać ' + url);
-                return r.text();
-            })
-            .then(function (text) {
-                el.textContent = text;
-                showWrapper(el);
-            })
-            .catch(function (err) {
-                el.textContent = 'Błąd wczytywania kodu: ' + err.message;
-            });
-    }
-
-    // ---- code block rendering ----
-
-    function showWrapper(preElement) {
-        var wrapper = preElement.closest('.code-block-wrapper');
-        if (wrapper) wrapper.classList.add('visible');
-    }
-
-    function createCodeBlockElement(filename, content) {
-        var section = document.createElement('div');
-
-        var title = document.createElement('div');
-        title.className = 'file-title';
-        title.textContent = filename;
-        section.appendChild(title);
-
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper visible';
-
-        var btnGroup = document.createElement('div');
-        btnGroup.className = 'btn-group';
-
-        var copyBtn = document.createElement('button');
-        copyBtn.className = 'action-btn';
+        const acts = document.createElement('div');
+        acts.className = 'code-actions';
+        const copyBtn = document.createElement('button');
         copyBtn.textContent = 'Kopiuj';
-        copyBtn.addEventListener('click', function () {
-            copyToClipboard(content, copyBtn);
-        });
-        btnGroup.appendChild(copyBtn);
-
-        var dlBtn = document.createElement('button');
-        dlBtn.className = 'action-btn';
+        copyBtn.onclick = () => Suchy.copy(content);
+        const dlBtn = document.createElement('button');
         dlBtn.textContent = 'Pobierz';
-        dlBtn.addEventListener('click', function () {
-            downloadFile(content, filename);
+        dlBtn.onclick = () => Suchy.download(content, fname);
+        acts.append(copyBtn, dlBtn);
+        wrap.append(acts);
+
+        const pre = document.createElement('pre');
+        pre.className = 'code'; pre.textContent = content;
+        wrap.append(pre);
+        d.append(wrap);
+        container.append(d);
+    },
+
+    /* render multiple file blocks */
+    renderFiles(containerId, files) {
+        const c = document.getElementById(containerId);
+        if (!c) return;
+        c.innerHTML = '';
+        files.forEach(f => this._block(c, f.name, f.content, f.name));
+        c.classList.add('show');
+    },
+
+    /* init accordion (native <details>) with lazy fetch */
+    accordion(detailsId, bodyId, url) {
+        const det = document.getElementById(detailsId);
+        const body = document.getElementById(bodyId);
+        if (!det || !body) return;
+        let done = false;
+        det.addEventListener('toggle', async () => {
+            if (done || !det.open) return;
+            done = true;
+            try {
+                const text = await Suchy._fetch(url);
+                body.textContent = text;
+            } catch (e) {
+                body.textContent = 'Nie udało się wczytać: ' + e.message;
+            }
         });
-        btnGroup.appendChild(dlBtn);
+    },
 
-        wrapper.appendChild(btnGroup);
+    /* fetch file and display in element */
+    async load(url, elOrId) {
+        const el = typeof elOrId === 'string' ? document.getElementById(elOrId) : elOrId;
+        if (!el) return;
+        el.textContent = 'Wczytywanie ' + url + '...';
+        try {
+            el.textContent = await Suchy._fetch(url);
+            Suchy._show(el);
+        } catch (e) {
+            el.textContent = 'Blad: ' + e.message;
+        }
+    },
 
-        var pre = document.createElement('pre');
-        pre.className = 'code-block';
-        pre.textContent = content;
-        wrapper.appendChild(pre);
-
-        section.appendChild(wrapper);
-        return section;
+    /* toast helper */
+    _toast(msg) {
+        let bar = document.querySelector('.toast-bar');
+        if (!bar) { bar = document.createElement('div'); bar.className = 'toast-bar'; document.body.append(bar); }
+        const el = document.createElement('div');
+        el.className = 'toast-msg'; el.textContent = msg;
+        bar.append(el);
+        setTimeout(() => el.remove(), 2100);
     }
 
-    function renderCodeBlocks(containerId, files) {
-        var container = document.getElementById(containerId);
-        if (!container) return;
-        container.innerHTML = '';
-        files.forEach(function (f) {
-            container.appendChild(createCodeBlockElement(f.name, f.content));
-        });
-        container.classList.add('visible');
-    }
-
-    // ---- public API ----
-
-    return {
-        copyToClipboard: copyToClipboard,
-        downloadFile: downloadFile,
-        escapeCString: escapeCString,
-        initAccordion: initAccordion,
-        fetchAndDisplay: fetchAndDisplay,
-        showWrapper: showWrapper,
-        createCodeBlockElement: createCodeBlockElement,
-        renderCodeBlocks: renderCodeBlocks
-    };
-
-})();
+};

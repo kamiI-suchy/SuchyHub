@@ -1,109 +1,82 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zadanie 22 – sterownik blokowy</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadanie 22 – sterownik blokowy</title>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <div class="card-main wide">
-        <h1>Zadanie 22 – sterownik blokowy</h1>
-        <p class="desc"><a class="pdf-link" href="zad22.pdf" target="_blank">Otwórz treść zadania (PDF)</a></p>
-        <p class="desc">Wpisz imię i nazwisko oraz numer indeksu, następnie wybierz wersję sterownika.</p>
+<div class="card card--wide">
+    <h1>Zadanie 22 – sterownik blokowy</h1>
+    <p class="desc"><a class="pdf-link" href="zad22.pdf" target="_blank">Otworz tresc zadania (PDF)</a></p>
+    <p class="desc">Wpisz imie i nazwisko oraz numer indeksu, nastepnie wybierz wersje sterownika.</p>
 
-        <div class="accordion" id="acc1">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#c1"
-                            aria-expanded="false">
-                        Pokaż instrukcję do wykonania zadania
-                    </button>
-                </h2>
-                <div id="c1" class="accordion-collapse collapse" data-bs-parent="#acc1">
-                    <div class="accordion-body" id="c1-body">Ładowanie instrukcji...</div>
-                </div>
-            </div>
-        </div>
+    <details class="accordion" id="acc">
+        <summary>Pokaz instrukcje do wykonania zadania</summary>
+        <div class="acc-body" id="acc-body">Ladowanie instrukcji...</div>
+    </details>
 
-        <label for="name">Imię i nazwisko:</label>
-        <input type="text" id="name" placeholder="np. Jan Kowalski">
+    <label for="name">Imie i nazwisko:</label>
+    <input type="text" id="name" placeholder="np. Jan Kowalski">
 
-        <label for="indexNo">Numer indeksu:</label>
-        <input type="text" id="indexNo" placeholder="np. 60000">
+    <label for="idx">Numer indeksu:</label>
+    <input type="text" id="idx" placeholder="np. 60000">
 
-        <div class="btn-row">
-            <button class="btn-primary" onclick="generuj('nowe')">Generuj dla nowych jąder</button>
-            <button class="btn-primary" onclick="generuj('bbb')">Generuj dla BBB</button>
-        </div>
-
-        <div id="variant-info" class="variant-info"></div>
-        <div id="files" class="files-container"></div>
-
-        <a class="back" href="../index.html">&larr; Powrót</a>
+    <div class="btn-row">
+        <button class="btn" onclick="gen('nowe')">Dla nowych jader</button>
+        <button class="btn" onclick="gen('bbb')">Dla BBB</button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../app.js"></script>
-    <script>
-        SuchyHub.initAccordion('c1', 'c1-body', 'uruchomienie.txt');
+    <div id="vt" class="variant-tag"></div>
+    <div id="files" class="file-list"></div>
 
-        var rootTemplate = '', bbbTemplate = '';
-        var rootMakefile = '', bbbMakefile = '', bbbPrepare = '';
+    <a class="back-link" href="../index.html">Powrot</a>
+</div>
 
-        async function ensureTemplates() {
-            if (rootTemplate && bbbTemplate && rootMakefile && bbbMakefile && bbbPrepare) return;
-            var _a = await Promise.all([
-                fetch('index_block.c', { cache: 'no-store' }),
-                fetch('bbb/index_block.c', { cache: 'no-store' }),
-                fetch('Makefile', { cache: 'no-store' }),
-                fetch('bbb/Makefile', { cache: 'no-store' }),
-                fetch('bbb/prepare', { cache: 'no-store' })
-            ]);
-            var _b = await Promise.all([_a[0].text(), _a[1].text(), _a[2].text(), _a[3].text(), _a[4].text()]);
-            rootTemplate = _b[0]; bbbTemplate = _b[1];
-            rootMakefile = _b[2]; bbbMakefile = _b[3]; bbbPrepare = _b[4];
-        }
+<script src="../app.js"></script>
+<script>
+    Suchy.accordion('acc', 'acc-body', 'uruchomienie.txt');
 
-        function applyPersonData(template, name, indexNumber) {
-            var escapedName = SuchyHub.escapeCString(name);
-            var indexLine = SuchyHub.escapeCString(indexNumber) + '\\n';
-            return template
-                .replace(/#define EXPECTED_NAME "[^"]*"/, '#define EXPECTED_NAME "' + escapedName + '"')
-                .replace(/#define INDEX_NUMBER "[^"]*"/, '#define INDEX_NUMBER "' + indexLine + '"')
-                .replace(/MODULE_AUTHOR\("[^"]*"\)/, 'MODULE_AUTHOR("' + escapedName + '")');
-        }
+    let rT='', bT='', rMk='', bMk='', bPr='';
 
-        async function generuj(variant) {
-            var name = document.getElementById('name').value.trim();
-            var indexRaw = document.getElementById('indexNo').value.trim();
+    async function load(){
+        if(rT&&bT&&rMk&&bMk&&bPr) return;
+        const [a,b,c,d,e]=await Promise.all([
+            fetch('index_block.c',{cache:'no-store'}),
+            fetch('bbb/index_block.c',{cache:'no-store'}),
+            fetch('Makefile',{cache:'no-store'}),
+            fetch('bbb/Makefile',{cache:'no-store'}),
+            fetch('bbb/prepare',{cache:'no-store'})
+        ]);
+        [rT,bT,rMk,bMk,bPr]=await Promise.all([a.text(),b.text(),c.text(),d.text(),e.text()]);
+    }
 
-            if (!name) { alert('Proszę wpisać imię i nazwisko.'); return; }
-            if (!/^[0-9]+$/.test(indexRaw)) { alert('Numer indeksu powinien zawierać tylko cyfry.'); return; }
+    function apply(tpl,name,idx){
+        const n=Suchy.escapeC(name), il=Suchy.escapeC(idx)+'\\n';
+        return tpl
+            .replace(/#define EXPECTED_NAME "[^"]*"/,`#define EXPECTED_NAME "${n}"`)
+            .replace(/#define INDEX_NUMBER "[^"]*"/,`#define INDEX_NUMBER "${il}"`)
+            .replace(/MODULE_AUTHOR\("[^"]*"\)/,`MODULE_AUTHOR("${n}")`);
+    }
 
-            try {
-                await ensureTemplates();
-                var isBbb = variant === 'bbb';
-                var template = isBbb ? bbbTemplate : rootTemplate;
-                var makefile = isBbb ? bbbMakefile : rootMakefile;
-                var code = applyPersonData(template, name, indexRaw);
-                var files = [
-                    { name: 'index_block.c', content: code },
-                    { name: 'Makefile', content: makefile }
-                ];
-                if (isBbb) files.push({ name: 'prepare', content: bbbPrepare });
-
-                SuchyHub.renderCodeBlocks('files', files);
-
-                var info = document.getElementById('variant-info');
-                info.textContent = isBbb ? 'Wybrana wersja: BBB' : 'Wybrana wersja: nowe jądra';
-                info.classList.add('visible');
-            } catch (e) {
-                alert('Błąd generowania kodu: ' + e.message);
-            }
-        }
-    </script>
+    async function gen(v){
+        const name=document.getElementById('name').value.trim();
+        const idx=document.getElementById('idx').value.trim();
+        if(!name){alert('Wpisz imie i nazwisko.');return;}
+        if(!/^[0-9]+$/.test(idx)){alert('Numer indeksu powinien zawierac tylko cyfry.');return;}
+        try{
+            await load();
+            const b=v==='bbb';
+            const code=apply(b?bT:rT,name,idx);
+            const mk=b?bMk:rMk;
+            const files=[{name:'index_block.c',content:code},{name:'Makefile',content:mk}];
+            if(b) files.push({name:'prepare',content:bPr});
+            Suchy.renderFiles('files',files);
+            document.getElementById('vt').textContent=b?'Wybrany wariant: BBB':'Wybrany wariant: nowe jadra';
+            document.getElementById('vt').classList.add('show');
+        }catch(e){alert('Blad: '+e.message);}
+    }
+</script>
 </body>
 </html>

@@ -1,49 +1,37 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zadanie 20 – odczyt przycisków przez GPIO sysfs</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadanie 20 – odczyt przyciskow przez GPIO sysfs</title>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <div class="card-main">
-        <h1>Zadanie 20 – odczyt przycisków przez GPIO sysfs</h1>
-        <p class="desc"><a class="pdf-link" href="lab20.pdf" target="_blank">Otwórz treść zadania (PDF)</a></p>
-        <p class="desc">Domyślnie: żółty GPIO68, niebieski GPIO69.</p>
+<div class="card card--medium">
+    <h1>Zadanie 20 – odczyt przyciskow przez GPIO sysfs</h1>
+    <p class="desc"><a class="pdf-link" href="lab20.pdf" target="_blank">Otworz tresc zadania (PDF)</a></p>
+    <p class="desc">Domyslnie: zolty GPIO68, niebieski GPIO69.</p>
 
-        <div class="accordion" id="acc1">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#c1"
-                            aria-expanded="false">
-                        Pokaż instrukcję do wykonania zadania
-                    </button>
-                </h2>
-                <div id="c1" class="accordion-collapse collapse" data-bs-parent="#acc1">
-                    <div class="accordion-body" id="c1-body">Ładowanie instrukcji...</div>
-                </div>
-            </div>
+    <details class="accordion" id="acc">
+        <summary>Pokaz instrukcje do wykonania zadania</summary>
+        <div class="acc-body" id="acc-body">Ladowanie instrukcji...</div>
+    </details>
+
+    <div class="code-wrap show">
+        <div class="code-actions">
+            <button onclick="Suchy.copy(document.getElementById('out').textContent)">Kopiuj</button>
+            <button onclick="Suchy.download(document.getElementById('out').textContent,'prog.c')">Pobierz</button>
         </div>
-
-        <div class="code-block-wrapper visible">
-            <div class="btn-group">
-                <button class="action-btn" onclick="SuchyHub.copyToClipboard(document.getElementById('output').textContent)">Kopiuj</button>
-                <button class="action-btn" onclick="SuchyHub.downloadFile(document.getElementById('output').textContent,'prog.c')">Pobierz</button>
-            </div>
-            <pre class="code-block" id="output"></pre>
-        </div>
-
-        <a class="back" href="../index.html">&larr; Powrót</a>
+        <pre class="code" id="out"></pre>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../app.js"></script>
-    <script>
-        SuchyHub.initAccordion('c1', 'c1-body', 'uruchomienie.txt');
-        SuchyHub.fetchAndDisplay('prog.c', 'output');
-    </script>
+    <a class="back-link" href="../index.html">Powrot</a>
+</div>
+
+<script src="../app.js"></script>
+<script>
+    Suchy.accordion('acc', 'acc-body', 'uruchomienie.txt');
+    Suchy.load('prog.c', 'out');
+</script>
 </body>
 </html>

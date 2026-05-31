@@ -1,78 +1,58 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zadanie 24 – USB: libftdi1 (sterowanie LEDami)</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadanie 24 – USB: libftdi1 (sterowanie LEDami)</title>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <div class="card-main wide">
-        <h1>Zadanie 24 – USB: libftdi1 (sterowanie LEDami)</h1>
-        <p class="desc"><a class="pdf-link" href="lab24.pdf" target="_blank">Otworz tresc zadania (PDF)</a></p>
-        <p class="desc">
-            Wyjatkowo robimy calosc na PC. Zadanie polega na sterowaniu czterema LEDami na plytce przez USB z klawiatury, na podstawie przykladu <code class="inline">bitbang_cbus.c</code> z biblioteki libftdi1.
-        </p>
+<div class="card card--wide">
+    <h1>Zadanie 24 – USB: libftdi1 (sterowanie LEDami)</h1>
+    <p class="desc"><a class="pdf-link" href="lab24.pdf" target="_blank">Otworz tresc zadania (PDF)</a></p>
+    <p class="desc">
+        Wyjatkowo robimy calosc na PC. Zadanie polega na sterowaniu czterema LEDami na plytce przez USB z klawiatury, na podstawie przykladu <code class="inline">bitbang_cbus.c</code> z biblioteki libftdi1.
+    </p>
 
-        <div class="accordion" id="acc1">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#c1"
-                            aria-expanded="false">
-                        Pokaz instrukcje do wykonania zadania
-                    </button>
-                </h2>
-                <div id="c1" class="accordion-collapse collapse" data-bs-parent="#acc1">
-                    <div class="accordion-body" id="c1-body">Ladowanie instrukcji...</div>
-                </div>
-            </div>
+    <details class="accordion" id="acc">
+        <summary>Pokaz instrukcje do wykonania zadania</summary>
+        <div class="acc-body" id="acc-body">Ladowanie instrukcji...</div>
+    </details>
+
+    <h2>Pliki do pobrania</h2>
+
+    <div class="file-row">
+        <div>
+            <div class="file-row-strong">libftdi1-1.5.tar.bz2</div>
+            <div class="file-row-muted">Biblioteka z gotowym, zmodyfikowanym <code class="inline">bitbang_cbus.c</code> – po <code class="inline">make</code> dziala od razu.</div>
         </div>
-
-        <h2>Pliki do pobrania</h2>
-
-        <div class="file-card">
-            <div class="file-info">
-                <div>
-                    <div class="file-name">libftdi1-1.5.tar.bz2</div>
-                    <div class="file-meta">Biblioteka libftdi1 z gotowym, zmodyfikowanym <code class="inline">bitbang_cbus.c</code> – po <code class="inline">make</code> dziala od razu.</div>
-                </div>
-            </div>
-            <a class="btn-primary" href="libftdi1-1.5.tar.bz2" download>Pobierz</a>
-        </div>
-
-        <h2>Archiwum oryginalne + plik do podmiany</h2>
-
-        <p class="desc" style="margin-bottom:8px">Dla osob, ktore chca same zmodyfikowac <code class="inline">bitbang_cbus.c</code> – pobierz oryginalne archiwum i nadpisz w nim plik tym zmodyfikowanym (lub napisz wlasny).</p>
-
-        <div class="file-card">
-            <div class="file-info">
-                <div>
-                    <div class="file-name">libftdi1-1.5.tar.bz2 (oryginalne)</div>
-                    <div class="file-meta">Oryginalna biblioteka libftdi1 – niezmieniona, prosto z internetu.</div>
-                </div>
-            </div>
-            <a class="btn-primary" href="oryginalneArchiwum/libftdi1-1.5.tar.bz2" download>Pobierz</a>
-        </div>
-
-        <div class="file-card">
-            <div class="file-info">
-                <div>
-                    <div class="file-name">bitbang_cbus.c (zmodyfikowany)</div>
-                    <div class="file-meta">Gotowy plik do podmiany w <code class="inline">examples/bitbang_cbus.c</code> – sterowanie 4 LEDami z klawiatury.</div>
-                </div>
-            </div>
-            <a class="btn-primary" href="bitbang_cbus.c" download>Pobierz</a>
-        </div>
-
-        <a class="back" href="../index.html">&larr; Powrot</a>
+        <a class="btn btn--sm" href="libftdi1-1.5.tar.bz2" download>Pobierz</a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../app.js"></script>
-    <script>
-        SuchyHub.initAccordion('c1', 'c1-body', 'uruchomienie.txt');
-    </script>
+    <h2>Archiwum oryginalne + plik do podmiany</h2>
+
+    <p class="desc" style="margin-bottom:8px">Dla osob, ktore chca same zmodyfikowac <code class="inline">bitbang_cbus.c</code> – pobierz oryginalne archiwum i nadpisz w nim plik tym zmodyfikowanym (lub napisz wlasny).</p>
+
+    <div class="file-row">
+        <div>
+            <div class="file-row-strong">libftdi1-1.5.tar.bz2 (oryginalne)</div>
+            <div class="file-row-muted">Oryginalna biblioteka libftdi1 – niezmieniona, prosto z internetu.</div>
+        </div>
+        <a class="btn btn--sm" href="oryginalneArchiwum/libftdi1-1.5.tar.bz2" download>Pobierz</a>
+    </div>
+
+    <div class="file-row">
+        <div>
+            <div class="file-row-strong">bitbang_cbus.c (zmodyfikowany)</div>
+            <div class="file-row-muted">Gotowy plik do podmiany w <code class="inline">examples/bitbang_cbus.c</code> – sterowanie 4 LEDami z klawiatury.</div>
+        </div>
+        <a class="btn btn--sm" href="bitbang_cbus.c" download>Pobierz</a>
+    </div>
+
+    <a class="back-link" href="../index.html">Powrot</a>
+</div>
+
+<script src="../app.js"></script>
+<script>Suchy.accordion('acc','acc-body','uruchomienie.txt');</script>
 </body>
 </html>
