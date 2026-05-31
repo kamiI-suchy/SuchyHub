@@ -75,12 +75,12 @@ function toggleAccordion(id) {
     body.style.maxHeight = '0px';
     el.classList.remove('open');
   } else {
-    el.classList.add('open');
     body.style.maxHeight = body.scrollHeight + 'px';
     body.addEventListener('transitionend', function handler() {
       body.style.maxHeight = 'none';
       body.removeEventListener('transitionend', handler);
     });
+    el.classList.add('open');
   }
 }
 
