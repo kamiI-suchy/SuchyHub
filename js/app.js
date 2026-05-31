@@ -45,6 +45,8 @@ function highlightC(code) {
     return save('c-str', m.replace(re('\\\\(?:x[0-9a-fA-F]+|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|[0-7]{1,3}|.)'), '<span class="c-esc">$&</span>'));
   });
 
+  var numPat = "(?<!\\x01)(0[bB][01']+|0[xX](?:[0-9a-fA-F']+(?:\\.[0-9a-fA-F']*)?[pP][+-]?\\d[\\d']*|[0-9a-fA-F']+)|0[dD](?:\\d[\\d']*(?:\\.\\d[\\d']*)?|\\.\\d[\\d']*)|0[oO]?[0-7']*|\\d[\\d']*(?:\\.\\d[\\d']*)?|\\.\\d[\\d']*)(?:[eE][+-]?\\d[\\d']*)?(?:f(?:16|32x|64x|128x|32|64|128)?|wb|bw|[uUlLiIjJzZwW]|d[fd]?)*(?!\\x01)";
+
   html = html.replace(re('^[ \\t]*(?:#|%:).*$', 'gm'), function(m) {
     var inner = m;
     inner = inner.replace(/%:%:/g, '<span class="c-op">##</span>');
@@ -53,6 +55,7 @@ function highlightC(code) {
     inner = inner.replace(/(?<!\w)defined(?=\s*[\(\w])/g, '<span class="c-ppk">defined</span>');
     inner = inner.replace(/(?<!\w)(__has_include|__has_c_attribute|__has_embed)(?=\s*[\(<])/g, '<span class="c-ppk">$1</span>');
     inner = inner.replace(/(^[ \t]*(?:#|%:)\s*)(\w+)(.*)$/gm, function(_, prefix, dir, rest) {
+      rest = rest.replace(re(numPat), '<span class="c-num">$&</span>');
       return prefix + '<span class="c-ppk">' + dir + '</span>' + rest.replace(/(?<!\w)#(?!\s*$|#)/g, '<span class="c-op">#</span>');
     });
     return save('c-pp', inner);
@@ -66,7 +69,7 @@ function highlightC(code) {
 
   html = html.replace(re('(?<![' + W + '])([A-Z_][A-Z0-9_]{2,})(?![' + W + '])'), '<span class="c-type">$1</span>');
 
-  html = html.replace(re("(?<!\\x01)(0[bB][01']+|0[xX](?:[0-9a-fA-F']+(?:\\.[0-9a-fA-F']*)?[pP][+-]?\\d[\\d']*|[0-9a-fA-F']+)|0[dD](?:\\d[\\d']*(?:\\.\\d[\\d']*)?|\\.\\d[\\d']*)|0[oO]?[0-7']*|\\d[\\d']*(?:\\.\\d[\\d']*)?|\\.\\d[\\d']*)(?:[eE][+-]?\\d[\\d']*)?(?:f(?:16|32x|64x|128x|32|64|128)?|wb|bw|[uUlLiIjJzZwW]|d[fd]?)*(?!\\x01)"), save.bind(null, 'c-num'));
+  html = html.replace(re(numPat), save.bind(null, 'c-num'));
 
   html = html.replace(re('(^|[,{])\\s*\\[([^\\]]+)\\]\\s*=', 'gm'), function(m, pre, idx) {
     return pre + ' [' + save('c-lbl', '[' + idx + '] =');
