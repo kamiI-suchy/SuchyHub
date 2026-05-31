@@ -1,4 +1,4 @@
-1. Skopiowanie wygenerowanych plików (index_block.c, Makefile, prepare) do katalogu /omap/device
+1. Skopiowanie pliku index_block.c oraz prepare i Makefile z /omap/modul do katalogu /omap/device
 2. Wejście do folderu /omap/device/ za pomocą polecenia
 cd /omap/device
 3. Wykonanie polecenia:
