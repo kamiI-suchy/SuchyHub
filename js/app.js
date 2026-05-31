@@ -23,6 +23,7 @@ function highlightC(code) {
   html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   html = html.replace(/(\/\*[\s\S]*?\*\/|\/\/[^\n]*)/g, '<span class="c-cmt">$1</span>');
   html = html.replace(/'((?:[^'\\]|\\.)*)'/g, '<span class="c-str">$&</span>');
+  html = html.replace(/"((?:[^"\\]|\\.)*)"/g, '<span class="c-str">$&</span>');
   html = html.replace(/#\s*(include|define|undef|ifdef|ifndef|if|else|elif|endif|pragma|error|line)\b/g, '<span class="c-pp">$&</span>');
   html = html.replace(/\b(static|extern|const|volatile|struct|enum|union|typedef|sizeof|return|if|else|for|while|do|switch|case|break|continue|goto|default|void|char|int|long|short|float|double|signed|unsigned|auto|register|bool|true|false|NULL|__init|__exit|__maybe_unused|__user|__iomem)\b/g, '<span class="c-kw">$&</span>');
   html = html.replace(/\b(u8|u16|u32|u64|s8|s16|s32|s64|size_t|ssize_t|loff_t|sector_t|dev_t|irqreturn_t|blk_status_t)\b/g, '<span class="c-type">$&</span>');
