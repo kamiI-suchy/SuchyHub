@@ -57,7 +57,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .acc-hdr::after{content:'';width:10px;height:10px;border-right:2px solid var(--text-m);border-bottom:2px solid var(--text-m);transform:rotate(45deg);transition:transform var(--t);flex-shrink:0;margin-left:.8rem}
 .accordion.open .acc-hdr::after{transform:rotate(-135deg)}
 .acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
-.accordion.open .acc-body{max-height:4000px}
+.accordion.open .acc-body{max-height:none}
 .acc-inner{padding:0 1.2rem 1rem;font-size:.9rem;line-height:1.7;white-space:pre-wrap;font-family:var(--mono);color:var(--text)}
 
 .form-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;margin-bottom:1rem}

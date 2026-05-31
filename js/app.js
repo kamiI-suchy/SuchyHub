@@ -59,13 +59,29 @@ function createCodeBlock(code, filename, containerId) {
     '</span></div>' +
     '<div class="acc-body"><div class="code-inner"><pre>' + highlightC(code) + '</pre></div></div>';
   wrapper._rawCode = code;
+  var body = wrapper.querySelector('.acc-body');
+  if (body) body.style.maxHeight = 'none';
   return wrapper;
 }
 
 function toggleAccordion(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  el.classList.toggle('open');
+  const body = el.querySelector('.acc-body');
+  const isOpen = el.classList.contains('open');
+  if (isOpen) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.offsetHeight;
+    body.style.maxHeight = '0px';
+    el.classList.remove('open');
+  } else {
+    el.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.addEventListener('transitionend', function handler() {
+      body.style.maxHeight = 'none';
+      body.removeEventListener('transitionend', handler);
+    });
+  }
 }
 
 function copyCode(blockId) {
