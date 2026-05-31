@@ -136,4 +136,4 @@ module_exit(timer_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Kamil Suchy");
-MODULE_DESCRIPTION("Sterownik znakowy z kernelem timerem");
+MODULE_DESCRIPTION("Sterownik znakowy z timerem kernela");
