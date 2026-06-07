@@ -19,5 +19,3 @@ cat /proc/my_procfs
 cat /proc/my_procfs
 10. Usunięcie modułu
 rmmod procfs_driver
-
-Nagrywamy ekran komputera (OBS) i płytkę (telefon).
