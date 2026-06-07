@@ -8,11 +8,16 @@ cd /omap/device
 (tak, tam jest spacja)
 5. Użycie polecenia make
 6. Skompilowanie programu userspace:
-Skopiować pliki (ioctl_read.c, Makefile z /omap/program) do katalogu /omap/device2
+Skopiować pliki (ioctl_read.c, Makefile z /omap/program) do katalogu /omap/device
 W Makefile z /omap/program zmienić prog.c na ioctl_read.c:
+
 all: ioctl_read
+
 ioctl_read: ioctl_read.c
 	$(CC_LINARO) $(CFLAGS) -I$(I_DIR_LINARO) -L$(L_DIR_LINARO) $(LFLAGS) ioctl_read.c -o ioctl_read
+
+clean:
+	rm -f ioctl_read.o
 Następnie:
 cd /omap/device2
 . ../device/prepare
@@ -30,4 +35,4 @@ ls -la /dev/ioctl_dev
 12. Usunięcie modułu
 rmmod ioctl_driver
 
-Nagrywamy ekran komputera (OBS).
+
