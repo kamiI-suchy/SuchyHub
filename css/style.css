@@ -140,30 +140,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 
 /* ─── Code block ─── */
 .code-wrap{
-  background:var(--code-bg);border-radius:var(--r);overflow:hidden;
-  margin-bottom:1rem;box-shadow:var(--shadow-md);border:1px solid var(--code-hd)
+  background:#282c34;border-radius:var(--r);overflow:hidden;
+  margin-bottom:1rem;box-shadow:var(--shadow-md);border:1px solid #181a1f
 }
 .code-top{
   display:flex;align-items:center;padding:.6rem 1rem;
-  background:var(--code-hd);color:#8b949e;font-size:.8rem;
-  font-family:var(--mono);border-bottom:1px solid var(--code-line);cursor:pointer
+  background:#21252b;color:#abb2bf;font-size:.8rem;
+  font-family:var(--mono);border-bottom:1px solid #181a1f;cursor:pointer
 }
-.code-top:hover{background:#1c2533}
-.accordion.open>.code-top{background:var(--code-hd)}
-.accordion.open>.code-top:hover{background:#1c2533}
+.code-top:hover{background:#282c34}
+.accordion.open>.code-top{background:#21252b}
+.accordion.open>.code-top:hover{background:#282c34}
 .code-top .code-name{font-weight:600;color:#c9d1d9}
 .code-top .code-acts{display:flex;gap:.4rem;margin-left:auto}
 .code-btn{
-  background:#1c2533;border:1px solid #30363d;color:#e6edf3;
+  background:#2c313a;border:1px solid #3a3f4b;color:#abb2bf;
   padding:.32rem .8rem;border-radius:var(--r-xs);cursor:pointer;
   font-size:.74rem;font-family:var(--font);font-weight:500;
   transition:all var(--t)
 }
-.code-btn:hover{background:#243044;border-color:#58a6ff;color:#58a6ff}
-.code-btn.btn-dl{background:#1c2533;border-color:#30363d}
-.code-btn.btn-dl:hover{background:#243044;border-color:var(--accent);color:var(--accent)}
+.code-btn:hover{background:#3a3f4b;border-color:#61aeee;color:#61aeee}
+.code-btn.btn-dl{background:#2c313a;border-color:#3a3f4b}
+.code-btn.btn-dl:hover{background:#3a3f4b;border-color:var(--accent);color:var(--accent)}
 .code-inner{padding:1.1rem;overflow-x:auto}
-.code-inner pre{font-family:var(--mono);font-size:.84rem;line-height:1.58;color:var(--code-tx);margin:0;white-space:pre;tab-size:4}
+.code-inner pre{font-family:var(--mono);font-size:.88rem;line-height:1.6;margin:0;white-space:pre;tab-size:4;font-feature-settings:"liga" 1}
 .code-inner pre code{background:0 0;padding:0}
 
 /* ─── Downloads ─── */
@@ -189,7 +189,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
   .task-header h1{font-size:1.35rem}
   .form-row{flex-direction:column;gap:.6rem}
   .container{padding:1.5rem 1rem 2rem}
-  .code-inner pre{font-size:.74rem}
+  .code-inner pre{font-size:.78rem}
   .multi-btns{flex-direction:column}
   .task-card{padding:.7rem 1rem}
 }
