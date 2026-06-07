@@ -107,7 +107,7 @@ const TASKS = [
     needsFields: { fullName: true, albumNumber: true },
     files: [
       { name: "ioctl_driver.c", path: "zadanie28/ioctl_driver.c",
-        subs: [{ from: "Kamil", to: "firstName" }, { from: "Suchy", to: "surname" }, { from: "Kamil Suchy", to: "fullName" }]
+        subs: [{ from: "Kamil Suchy", to: "fullName" }, { from: "Kamil", to: "firstName" }, { from: "Suchy", to: "surname" }, { from: "60859", to: "albumNumber" }]
       },
       { name: "ioctl_read.c", path: "zadanie28/ioctl_read.c" }
     ]
