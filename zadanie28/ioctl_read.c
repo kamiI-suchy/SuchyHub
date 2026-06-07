@@ -27,7 +27,7 @@ int main(void)
 		close(fd);
 		return 1;
 	}
-	printf("Imie: %s\n", buf);
+	printf("Imię: %s\n", buf);
 
 	memset(buf, 0, sizeof(buf));
 	if (ioctl(fd, IOCTL_GET_SURNAME, buf) < 0) {

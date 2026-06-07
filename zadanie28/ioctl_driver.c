@@ -70,7 +70,7 @@ static int __init ioctl_init(void)
 		goto err_class;
 	}
 
-	printk(KERN_INFO "Modul ioctl zaladowany (/dev/%s)\n", DEVICE_NAME);
+	printk(KERN_INFO "Moduł ioctl załadowany (/dev/%s)\n", DEVICE_NAME);
 	return 0;
 
 err_class:
@@ -88,7 +88,7 @@ static void __exit ioctl_exit(void)
 	class_destroy(ioctl_class);
 	cdev_del(&ioctl_cdev);
 	unregister_chrdev_region(dev_number, 1);
-	printk(KERN_INFO "Modul ioctl wyladowany\n");
+	printk(KERN_INFO "Moduł ioctl wyładowany\n");
 }
 
 module_init(ioctl_init);
@@ -96,4 +96,4 @@ module_exit(ioctl_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Kamil Suchy");
-MODULE_DESCRIPTION("Sterownik znakowy z obsluga ioctl");
+MODULE_DESCRIPTION("Sterownik znakowy z obsługą ioctl");

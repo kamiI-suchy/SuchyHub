@@ -31,14 +31,14 @@ static const struct proc_ops procfs_fops = {
 static int __init procfs_init(void)
 {
 	proc_create(PROC_NAME, 0, NULL, &procfs_fops);
-	printk(KERN_INFO "Modul procfs zaladowany (/proc/%s)\n", PROC_NAME);
+	printk(KERN_INFO "Moduł procfs załadowany (/proc/%s)\n", PROC_NAME);
 	return 0;
 }
 
 static void __exit procfs_exit(void)
 {
 	remove_proc_entry(PROC_NAME, NULL);
-	printk(KERN_INFO "Modul procfs wyladowany\n");
+	printk(KERN_INFO "Moduł procfs wyładowany\n");
 }
 
 module_init(procfs_init);
@@ -46,4 +46,4 @@ module_exit(procfs_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Kamil Suchy");
-MODULE_DESCRIPTION("Sterownik procfs zwracajacy imie, nazwisko i licznik");
+MODULE_DESCRIPTION("Sterownik procfs zwracający imię, nazwisko i licznik");
