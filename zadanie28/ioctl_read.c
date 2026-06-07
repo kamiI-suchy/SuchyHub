@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -13,7 +11,9 @@
 int main(void)
 {
 	int fd;
-	char buf[64];
+	char name[64];
+	char surname[64];
+	char index[64];
 
 	fd = open("/dev/ioctl_dev", O_RDWR);
 	if (fd < 0) {
@@ -21,29 +21,26 @@ int main(void)
 		return 1;
 	}
 
-	memset(buf, 0, sizeof(buf));
-	if (ioctl(fd, IOCTL_GET_NAME, buf) < 0) {
+	if (ioctl(fd, IOCTL_GET_NAME, name) < 0) {
 		perror("ioctl IOCTL_GET_NAME");
 		close(fd);
 		return 1;
 	}
-	printf("Imię: %s\n", buf);
+	printf("Imię: %s\n", name);
 
-	memset(buf, 0, sizeof(buf));
-	if (ioctl(fd, IOCTL_GET_SURNAME, buf) < 0) {
+	if (ioctl(fd, IOCTL_GET_SURNAME, surname) < 0) {
 		perror("ioctl IOCTL_GET_SURNAME");
 		close(fd);
 		return 1;
 	}
-	printf("Nazwisko: %s\n", buf);
+	printf("Nazwisko: %s\n", surname);
 
-	memset(buf, 0, sizeof(buf));
-	if (ioctl(fd, IOCTL_GET_INDEX, buf) < 0) {
+	if (ioctl(fd, IOCTL_GET_INDEX, index) < 0) {
 		perror("ioctl IOCTL_GET_INDEX");
 		close(fd);
 		return 1;
 	}
-	printf("Nr indeksu: %s\n", buf);
+	printf("Nr indeksu: %s\n", index);
 
 	close(fd);
 	return 0;
