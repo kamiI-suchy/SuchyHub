@@ -1,0 +1,23 @@
+1. Skopiowanie plików (procfs_driver.c, Makefile, prepare) do katalogu /omap/device
+2. W Makefile zmienić linijkę obj-m na:
+obj-m := procfs_driver.o
+3. Wejście do folderu /omap/device/ za pomocą polecenia
+cd /omap/device
+4. Wykonanie polecenia
+. ./prepare
+(tak, tam jest spacja)
+5. Użycie polecenia make
+6. Wejście na płytkę (telnet omap), jak już tam jesteśmy to wykonujemy polecenie
+cd home
+7. Włożenie modułu
+insmod procfs_driver.ko
+8. Sprawdzenie załadowania
+dmesg | tail
+9. Odczyt procfs (kilka razy, żeby numer sekwencyjny się zmieniał):
+cat /proc/my_procfs
+cat /proc/my_procfs
+cat /proc/my_procfs
+10. Usunięcie modułu
+rmmod procfs_driver
+
+Nagrywamy ekran komputera (OBS) i płytkę (telefon).

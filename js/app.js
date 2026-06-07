@@ -107,12 +107,17 @@ function applyMorse(code, initials, type) {
 
 function applySubs(code, subs, fields) {
   if (!subs) return code;
+  var nameParts = fields.fullName ? fields.fullName.trim().split(/\s+/) : [];
+  var firstName = nameParts.length > 0 ? nameParts[0] : DEFAULTS.fullName.split(' ')[0];
+  var surname = nameParts.length > 1 ? nameParts[nameParts.length - 1] : DEFAULTS.fullName.split(' ')[1] || '';
   subs.forEach(function(s) {
     var val = '';
     if (s.to === 'fullName' && fields.fullName) val = fields.fullName;
     else if (s.to === 'albumNumber' && fields.albumNumber) val = fields.albumNumber;
     else if (s.to === 'initial1' && fields.initials && fields.initials.length >= 1) val = "'" + fields.initials[0] + "'";
     else if (s.to === 'initial2' && fields.initials && fields.initials.length >= 2) val = "'" + fields.initials[1] + "'";
+    else if (s.to === 'firstName') val = firstName;
+    else if (s.to === 'surname') val = surname;
     if (val) code = code.split(s.from).join(val);
   });
   return code;

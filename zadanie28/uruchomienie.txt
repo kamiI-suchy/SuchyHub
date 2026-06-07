@@ -1,0 +1,33 @@
+1. Skopiowanie plików modułu (ioctl_driver.c, Makefile, prepare) do katalogu /omap/device
+2. W Makefile (w /omap/device) zmienić linijkę obj-m na:
+obj-m := ioctl_driver.o
+3. Wejście do folderu /omap/device/ za pomocą polecenia
+cd /omap/device
+4. Wykonanie polecenia
+. ./prepare
+(tak, tam jest spacja)
+5. Użycie polecenia make
+6. Skompilowanie programu userspace:
+Skopiować pliki (ioctl_read.c, Makefile z /omap/program) do katalogu /omap/device2
+W Makefile z /omap/program zmienić prog.c na ioctl_read.c:
+all: ioctl_read
+ioctl_read: ioctl_read.c
+	$(CC_LINARO) $(CFLAGS) -I$(I_DIR_LINARO) -L$(L_DIR_LINARO) $(LFLAGS) ioctl_read.c -o ioctl_read
+Następnie:
+cd /omap/device2
+. ../device/prepare
+make
+7. Wejście na płytkę (telnet omap), jak już tam jesteśmy to wykonujemy polecenie
+cd home
+8. Włożenie modułu
+insmod ioctl_driver.ko
+9. Sprawdzenie załadowania
+dmesg | tail
+10. Sprawdzenie czy plik /dev/ioctl_dev istnieje
+ls -la /dev/ioctl_dev
+11. Uruchomienie programu odczytującego przez ioctl
+./ioctl_read
+12. Usunięcie modułu
+rmmod ioctl_driver
+
+Nagrywamy ekran komputera (OBS).

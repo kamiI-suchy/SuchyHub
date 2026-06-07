@@ -90,5 +90,26 @@ const TASKS = [
     files: [{ name: "timer_driver.c", path: "zadanie26/timer_driver.c",
       subs: [{ from: "Kamil Suchy", to: "fullName" }]
     }]
+  },
+  {
+    id: 27, title: "procfs – sterownik /proc",
+    desc: "Sterownik procfs zwracający imię i nazwisko oraz inkrementowany licznik odczytów.",
+    pdf: "zadanie27/zad27.pdf", uruchomienie: "zadanie27/uruchomienie.txt",
+    needsFields: { fullName: true },
+    files: [{ name: "procfs_driver.c", path: "zadanie27/procfs_driver.c",
+      subs: [{ from: "Kamil Suchy", to: "fullName" }]
+    }]
+  },
+  {
+    id: 28, title: "ioctl – odczyt danych przez ioctl",
+    desc: "Sterownik znakowy udostępniający imię, nazwisko i nr indeksu przez ioctl. Program userspace odczytujący te dane.",
+    pdf: "zadanie28/zad28.pdf", uruchomienie: "zadanie28/uruchomienie.txt",
+    needsFields: { fullName: true, albumNumber: true },
+    files: [
+      { name: "ioctl_driver.c", path: "zadanie28/ioctl_driver.c",
+        subs: [{ from: "Kamil", to: "firstName" }, { from: "Suchy", to: "surname" }, { from: "Kamil Suchy", to: "fullName" }]
+      },
+      { name: "ioctl_read.c", path: "zadanie28/ioctl_read.c" }
+    ]
   }
 ];
