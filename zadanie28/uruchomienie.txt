@@ -10,7 +10,6 @@ cd /omap/device
    (powstanie plik ioctl_driver.ko)
 6. Skompilowanie programu userspace:
    a) Skopiować pliki (ioctl_read.c, Makefile z /omap/program) do /omap/device
-      (nadpisać istniejący Makefile modułowy)
    b) W Makefile zmienić wszystkie wystąpienia 'prog' na 'ioctl_read':
       all: ioctl_read
 
