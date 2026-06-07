@@ -1,5 +1,5 @@
-1. Skopiowanie plików modułu (ioctl_driver.c, Makefile, prepare) do katalogu /omap/device
-2. W Makefile (w /omap/device) zmienić linijkę obj-m na:
+1. Skopiowanie plików modułu jądra (ioctl_driver.c, Makefile z /omap/modul, prepare) do katalogu /omap/device
+2. W Makefile (modułowym) zmienić linijkę obj-m na:
 obj-m := ioctl_driver.o
 3. Wejście do folderu /omap/device/ za pomocą polecenia
 cd /omap/device
@@ -7,32 +7,31 @@ cd /omap/device
 . ./prepare
 (tak, tam jest spacja)
 5. Użycie polecenia make
+   (powstanie plik ioctl_driver.ko)
 6. Skompilowanie programu userspace:
-Skopiować pliki (ioctl_read.c, Makefile z /omap/program) do katalogu /omap/device
-W Makefile z /omap/program zmienić prog.c na ioctl_read.c:
+   a) Skopiować pliki (ioctl_read.c, Makefile z /omap/program) do /omap/device
+      (nadpisać istniejący Makefile modułowy)
+   b) W Makefile zmienić wszystkie wystąpienia 'prog' na 'ioctl_read':
+      all: ioctl_read
 
-all: ioctl_read
+      ioctl_read: ioctl_read.c
+      	$(CC_LINARO) $(CFLAGS) -I$(I_DIR_LINARO) -L$(L_DIR_LINARO) $(LFLAGS) ioctl_read.c -o ioctl_read
 
-ioctl_read: ioctl_read.c
-	$(CC_LINARO) $(CFLAGS) -I$(I_DIR_LINARO) -L$(L_DIR_LINARO) $(LFLAGS) ioctl_read.c -o ioctl_read
+      clean:
+      	rm -f ioctl_read.o
 
-clean:
-	rm -f ioctl_read.o
-Następnie:
-cd /omap/device2
-. ../device/prepare
-make
+      .PHONY: all clean
+   c) Użyć polecenia make (bez prepare – ścieżki w Makefile są bezwzględne)
+   (powstanie plik ioctl_read)
 7. Wejście na płytkę (telnet omap), jak już tam jesteśmy to wykonujemy polecenie
 cd home
 8. Włożenie modułu
 insmod ioctl_driver.ko
 9. Sprawdzenie załadowania
 dmesg | tail
-10. Sprawdzenie czy plik /dev/ioctl_dev istnieje
+10. Sprawdzenie czy plik urządzenia istnieje
 ls -la /dev/ioctl_dev
 11. Uruchomienie programu odczytującego przez ioctl
 ./ioctl_read
 12. Usunięcie modułu
 rmmod ioctl_driver
-
-
