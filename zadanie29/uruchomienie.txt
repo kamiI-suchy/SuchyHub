@@ -15,6 +15,5 @@
 9. Test: naciśnięcie przycisków żółtego i niebieskiego, potem:
    dmesg | tail
    Powinno pokazać rozróżnienie który przycisk został wciśnięty oraz dane studenta.
-   W workqueue obsługa wykonywana jest w wątku roboczym (dolna połowa) po przerwaniu (górna połowa).
 10. Usunięcie modułu:
     rmmod interrupt_buttons
