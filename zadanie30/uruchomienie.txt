@@ -15,7 +15,6 @@
 9. Test: naciśnięcie przycisków żółtego i niebieskiego, potem:
    dmesg | tail
    Powinno pokazać rozróżnienie który przycisk został wciśnięty oraz dane studenta.
-   Opóźnienie 3s (DELAY_MS=3000) pozwala zaobserwować różnicę czasu między przerwaniem
-   a obsługą delayed_work w logu dmesg - widoczne na nagraniu smartfonem.
+   Opóźnienie wynosi 3s (DELAY_MS=3000)
 10. Usunięcie modułu:
     rmmod interrupt_buttons
