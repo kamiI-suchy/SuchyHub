@@ -10,11 +10,11 @@
    cd home
 7. Wlozenie modulu:
    insmod interrupt_buttons.ko
-8. Sprawdzenie zaladowania:
+8. Sprawdzenie załadowania:
    dmesg | tail
-9. Test: nacisniecie przyciskow zoltego i niebieskiego, potem:
+9. Test: nacisniecie przyciskow żółtego i niebieskiego, potem:
    dmesg | tail
-   Powinno pokazac rozroznienie ktory przycisk zostal wcisniety oraz dane studenta.
-   W workqueue obsluga wykonywana jest w watku roboczym (dolna polowa) po przerwaniu (gorna polowa).
+   Powinno pokazac rozroznienie ktory przycisk zostal wciśnięty oraz dane studenta.
+   W workqueue obsługa wykonywana jest w watku roboczym (dolna polowa) po przerwaniu (gorna polowa).
 10. Usuniecie modulu:
     rmmod interrupt_buttons

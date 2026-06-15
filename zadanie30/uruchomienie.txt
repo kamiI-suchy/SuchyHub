@@ -10,12 +10,12 @@
    cd home
 7. Wlozenie modulu:
    insmod interrupt_buttons.ko
-8. Sprawdzenie zaladowania:
+8. Sprawdzenie załadowania:
    dmesg | tail
-9. Test: nacisniecie przyciskow zoltego i niebieskiego, potem:
+9. Test: nacisniecie przyciskow żółtego i niebieskiego, potem:
    dmesg | tail
-   Powinno pokazac rozroznienie ktory przycisk zostal wcisniety oraz dane studenta.
-   Opóznienie 3s (DELAY_MS=3000) pozwala zaobserwowac roznice czasu miedzy przerwaniem
-   a obsluga delayed_work w logu dmesg - widoczne na nagraniu smartfonem.
+   Powinno pokazac rozroznienie ktory przycisk zostal wciśnięty oraz dane studenta.
+   Opóźnienie 3s (DELAY_MS=3000) pozwala zaobserwowac roznice czasu miedzy przerwaniem
+   a obsługa delayed_work w logu dmesg - widoczne na nagraniu smartfonem.
 10. Usuniecie modulu:
     rmmod interrupt_buttons
