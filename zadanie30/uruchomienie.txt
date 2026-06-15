@@ -15,6 +15,6 @@
 9. Test: naciśnięcie przycisków żółtego i niebieskiego, potem:
    dmesg | tail
    I potem po odpowiednim ustawionym czasie znowu dmesg | tail aby pokazać, że wyświetla się po czasie
-   Opóźnienie wynosi 3s (DELAY_MS=3000)
+   Opóźnienie wynosi 3s (DELAY_MS=3000) w define
 10. Usunięcie modułu:
     rmmod interrupt_buttons
