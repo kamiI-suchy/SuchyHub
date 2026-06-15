@@ -57,7 +57,7 @@ static int __init interrupt_init(void)
 	void __iomem *mem;
 	void __iomem *cm_per;
 
-	printk(KERN_INFO "ładowanie modulu przerwań z workqueue...\n");
+	printk(KERN_INFO "Ładowanie modułu przerwań z workqueue...\n");
 
 	cm_per = ioremap(CM_PER_START_ADDR, CM_PER_SIZE);
 	if (!cm_per) {
@@ -126,7 +126,7 @@ static int __init interrupt_init(void)
 
 	iounmap(mem);
 
-	printk(KERN_INFO "Modul przerwań z workqueue załadowany (GPIO68 IRQ=%d, GPIO69 IRQ=%d)\n",
+	printk(KERN_INFO "Moduł przerwań z workqueue załadowany (GPIO68 IRQ=%d, GPIO69 IRQ=%d)\n",
 	       irq_yellow, irq_blue);
 	return 0;
 
@@ -147,7 +147,7 @@ static void __exit interrupt_exit(void)
 	free_irq(irq_blue, NULL);
 	gpio_free(BUTTON_YELLOW);
 	gpio_free(BUTTON_BLUE);
-	printk(KERN_INFO "Modul przerwań z workqueue wyładowany\n");
+	printk(KERN_INFO "Moduł przerwań z workqueue wyładowany\n");
 }
 
 module_init(interrupt_init);

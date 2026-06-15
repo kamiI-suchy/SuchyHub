@@ -59,7 +59,7 @@ static int __init interrupt_init(void)
 	void __iomem *mem;
 	void __iomem *cm_per;
 
-	printk(KERN_INFO "Ładowanie modulu przerwań z delayed_work...\n");
+	printk(KERN_INFO "Ładowanie modułu przerwań z delayed_work...\n");
 
 	cm_per = ioremap(CM_PER_START_ADDR, CM_PER_SIZE);
 	if (!cm_per) {
@@ -128,7 +128,7 @@ static int __init interrupt_init(void)
 
 	iounmap(mem);
 
-	printk(KERN_INFO "Modul przerwań z delayed_work załadowany (GPIO68 IRQ=%d, GPIO69 IRQ=%d, delay=%dms)\n",
+	printk(KERN_INFO "Moduł przerwań z delayed_work załadowany (GPIO68 IRQ=%d, GPIO69 IRQ=%d, delay=%dms)\n",
 	       irq_yellow, irq_blue, DELAY_MS);
 	return 0;
 
@@ -149,7 +149,7 @@ static void __exit interrupt_exit(void)
 	free_irq(irq_blue, NULL);
 	gpio_free(BUTTON_YELLOW);
 	gpio_free(BUTTON_BLUE);
-	printk(KERN_INFO "Modul przerwań z delayed_work wyładowany\n");
+	printk(KERN_INFO "Moduł przerwań z delayed_work wyładowany\n");
 }
 
 module_init(interrupt_init);
