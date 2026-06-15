@@ -14,7 +14,7 @@
    dmesg | tail
 9. Test: naciśnięcie przycisków żółtego i niebieskiego, potem:
    dmesg | tail
-   Powinno pokazać rozróżnienie który przycisk został wciśnięty oraz dane studenta.
+   I potem po odpowiednim ustawionym czasie znowu dmesg | tail aby pokazać, że wyświetla się po czasie
    Opóźnienie wynosi 3s (DELAY_MS=3000)
 10. Usunięcie modułu:
     rmmod interrupt_buttons
