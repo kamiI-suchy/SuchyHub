@@ -111,5 +111,23 @@ const TASKS = [
       },
       { name: "ioctl_read.c", path: "zadanie28/ioctl_read.c" }
     ]
+  },
+  {
+    id: 29, title: "Workqueue – dolna połowa przerwania",
+    desc: "Sterownik obsługujący przerwania od przycisków GPIO68 (żółty) i GPIO69 (niebieski) z dolną połową realizowaną przez workqueue.",
+    pdf: "zadanie29/lab29.pdf", uruchomienie: "zadanie29/uruchomienie.txt",
+    needsFields: { fullName: true, albumNumber: true },
+    files: [{ name: "interrupt_buttons.c", path: "zadanie29/interrupt_buttons.c",
+      subs: [{ from: "Kamil Suchy", to: "fullName" }, { from: "60859", to: "albumNumber" }]
+    }]
+  },
+  {
+    id: 30, title: "Delayed work – dolna połowa przerwania",
+    desc: "Sterownik obsługujący przerwania od przycisków GPIO68 (żółty) i GPIO69 (niebieski) z dolną połową realizowaną przez delayed_work (opóźnienie 3s).",
+    pdf: "zadanie30/lab30.pdf", uruchomienie: "zadanie30/uruchomienie.txt",
+    needsFields: { fullName: true, albumNumber: true },
+    files: [{ name: "interrupt_buttons.c", path: "zadanie30/interrupt_buttons.c",
+      subs: [{ from: "Kamil Suchy", to: "fullName" }, { from: "60859", to: "albumNumber" }]
+    }]
   }
 ];

@@ -1,0 +1,20 @@
+1. Skopiowanie plikow (interrupt_buttons.c) do katalogu /omap/modul/
+2. Wejscie do folderu /omap/modul/ za pomoca polecenia:
+   cd /omap/modul
+3. Wykonanie polecenia:
+   . ./prepare
+   (tak, tam jest spacja)
+4. W Makefile zmienic obj-m := interrupt_buttons.o
+5. Uzyc polecenia make
+6. Wejscie na plytke (telnet omap), jak juz tam jestesmy to wykonujemy polecenie:
+   cd home
+7. Wlozenie modulu:
+   insmod interrupt_buttons.ko
+8. Sprawdzenie zaladowania:
+   dmesg | tail
+9. Test: nacisniecie przyciskow zoltego i niebieskiego, potem:
+   dmesg | tail
+   Powinno pokazac rozroznienie ktory przycisk zostal wcisniety oraz dane studenta.
+   W workqueue obsluga wykonywana jest w watku roboczym (dolna polowa) po przerwaniu (gorna polowa).
+10. Usuniecie modulu:
+    rmmod interrupt_buttons
